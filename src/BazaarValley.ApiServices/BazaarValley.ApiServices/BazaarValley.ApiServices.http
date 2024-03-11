@@ -1,0 +1,6 @@
+@BazaarValley.ApiServices_HostAddress = http://localhost:5189
+
+GET {{BazaarValley.ApiServices_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
