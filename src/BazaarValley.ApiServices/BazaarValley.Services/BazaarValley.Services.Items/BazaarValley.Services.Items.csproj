@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DiExtensions.cs~RF6e2e5f0.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Items\" />
+    <Folder Include="Services\ItemImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BazaarValley.Common\BazaarValley.Common.Dto\BazaarValley.Common.Dto.csproj" />
+    <ProjectReference Include="..\..\BazaarValley.Dal\BazaarValley.Dal\BazaarValley.Dal.csproj" />
+    <ProjectReference Include="..\..\BazaarValley.Domain\BazaarValley.Domain\BazaarValley.Domain.csproj" />
+    <ProjectReference Include="..\BazaarValley.Services.Categories\BazaarValley.Services.Categories.csproj" />
+  </ItemGroup>
+
+</Project>
