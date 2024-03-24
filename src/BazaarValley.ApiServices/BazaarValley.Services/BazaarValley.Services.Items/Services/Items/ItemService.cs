@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BazaarValley.Common.Dto.Items;
 using BazaarValley.Dal;
+using BazaarValley.Domain.Items;
 using BazaarValley.Services.Items.Services.ItemImages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -28,8 +29,22 @@ public class ItemService : IItemService
 
     public async Task<IEnumerable<ItemBaseDto>> GetAsync(ItemFilterDto itemFilterDto)
     {
-        var existingItems = await _applicationContext.Items.Where(item => item.CategoryId == itemFilterDto.CategoryId).ToListAsync();
-        var items = _mapper.Map<IEnumerable<ItemBaseDto>>(existingItems);
+        var existingItems = await _applicationContext.Items.Where(item => item.CategoryId == itemFilterDto.CategoryId)
+            .Include(itemModel => itemModel.Fields).ToListAsync();
+
+        var filteredByFields = new List<ItemModel>();
+
+        if (itemFilterDto.FieldValues.Any())
+        {
+            filteredByFields.AddRange(existingItems.Where(existingItem => existingItem.Fields.Any(field => itemFilterDto.FieldValues.Any(filteredField => filteredField.Id == field.CategoryFieldId && field.Value.Equals(filteredField.Value)))));
+        }
+        else
+        {
+            filteredByFields = existingItems;
+        }
+
+
+        var items = _mapper.Map<IEnumerable<ItemBaseDto>>(filteredByFields);
         foreach (var item in items)
         {
             item.Images = await _imageService.GetPreviewAsync(item.Id);

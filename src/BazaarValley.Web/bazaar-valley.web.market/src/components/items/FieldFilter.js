@@ -5,16 +5,40 @@ import Collapse from "react-bootstrap/Collapse";
 
 import "./FieldFilter.css";
 
-function FieldFilter({ field, values }) {
-	const { id, isPrimary, name } = field;
+function FieldFilter({
+	field,
+	values,
+	selectedFieldValues,
+	setSelectedFieldValues
+}) {
+	const [open, setOpen] = useState(field.isPrimary);
 
-	const [open, setOpen] = useState(isPrimary);
+	function handleChangeFieldValue(fieldValue) {
+		console.log(fieldValue);
+		if (isSelected(fieldValue)) {
+			setSelectedFieldValues(
+				selectedFieldValues.filter(
+					(existingFieldValue) =>
+						existingFieldValue.value !== fieldValue.value
+				)
+			);
+		} else {
+			setSelectedFieldValues([...selectedFieldValues, fieldValue]);
+		}
+	}
+
+	function isSelected(fieldValue) {
+		return selectedFieldValues.some(
+			(existingFieldValue) =>
+				existingFieldValue.value === fieldValue.value
+		);
+	}
 
 	return (
 		<div className="d-flex flex-column p-4 bg-white with-border">
 			<div className="d-flex align-items-center mb-2">
 				<label className="font-weight-bold text-uppercase fs-4">
-					{name}
+					{field.name}
 				</label>
 
 				<Button
@@ -35,11 +59,21 @@ function FieldFilter({ field, values }) {
 					{values.map((value) => {
 						return (
 							<Form.Check
-								key={value.id}
+								key={`${field.id}-${value}`}
 								className="fs-5"
 								type="checkbox"
-								id={`${name}-${id}-${value}`}
+								id={`${field.name}-${field.id}-${value}`}
 								label={value}
+								checked={isSelected({
+									id: field.id,
+									value: value
+								})}
+								onChange={() =>
+									handleChangeFieldValue({
+										id: field.id,
+										value: value
+									})
+								}
 							/>
 						);
 					})}

@@ -6,12 +6,12 @@ export function loadItemsSuccess(items) {
 	return { type: types.LOAD_ITEMS_SUCCESS, items };
 }
 
-export function loadItems(categoryId) {
+export function loadItems(categoryId, fieldValues) {
 	return function (dispatch) {
-		dispatch(beginApiCall());
+		//dispatch(beginApiCall());
 
 		return itemsApi
-			.getItems(categoryId)
+			.getItems(categoryId, fieldValues)
 			.then((categories) => dispatch(loadItemsSuccess(categories)))
 			.catch((error) => {
 				dispatch(apiCallError);

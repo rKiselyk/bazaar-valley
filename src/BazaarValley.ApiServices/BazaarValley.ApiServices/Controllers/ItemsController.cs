@@ -19,8 +19,8 @@ public class ItemsController : Controller
         _itemService = itemService;
     }
 
-    [HttpGet]
-    public async Task<IEnumerable<ItemBaseDto>> Get([FromQuery] ItemFilterDto itemsFilter) // TODO Add filtering
+    [HttpPost]
+    public async Task<IEnumerable<ItemBaseDto>> Get(ItemFilterDto itemsFilter) // TODO Add filtering
     {
         var items = await _itemService.GetAsync(itemsFilter);
         return items;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import PropTypes, { func } from "prop-types";
 import { bindActionCreators } from "redux";
 import * as categoryActions from "../../redux/actions/categoryActions";
 import * as itemActions from "../../redux/actions/itemActions";
@@ -14,7 +14,7 @@ function ItemsPage({ categories, items, loading, actions }) {
 	const { categoryId } = useParams();
 
 	const [category, setCategory] = useState({});
-	//const [fieldsValues, setFieldsValues] = useState({});
+	const [selectedFieldValues, setSelectedFieldValues] = useState([]);
 
 	const {
 		data: fieldsValues,
@@ -29,7 +29,7 @@ function ItemsPage({ categories, items, loading, actions }) {
 			});
 		}
 
-		actions.loadItems(categoryId).catch((error) => {
+		actions.loadItems(categoryId, []).catch((error) => {
 			alert("Loading courses failed" + error);
 		});
 
@@ -40,13 +40,11 @@ function ItemsPage({ categories, items, loading, actions }) {
 		setCategory(selectedCategory);
 	}, []);
 
-	// useEffect(() => {
-	// 	const selectedCategory = categories.find(
-	// 		(category) => category.id === parseInt(categoryId)
-	// 	);
-
-	// 	setCategory(selectedCategory);
-	// }, [categoryId, categories]);
+	useEffect(() => {
+		actions.loadItems(categoryId, selectedFieldValues).catch((error) => {
+			alert("Loading courses failed" + error);
+		});
+	}, [selectedFieldValues]);
 
 	if (error) {
 		alert(error);
@@ -67,6 +65,8 @@ function ItemsPage({ categories, items, loading, actions }) {
 					return (
 						<FieldFilter
 							key={fieldValues.field.id}
+							selectedFieldValues={selectedFieldValues}
+							setSelectedFieldValues={setSelectedFieldValues}
 							{...fieldValues}
 						/>
 					);
@@ -78,6 +78,18 @@ function ItemsPage({ categories, items, loading, actions }) {
 						{category.name}
 					</label>
 					<label className="ml-2 fs-3">({items.length})</label>
+					<div className="ml-5 w-100 f-flex align-items-center">
+						{selectedFieldValues.map((selectedFieldValue) => {
+							return (
+								<div
+									key={selectedFieldValue.value}
+									className="ml-2 p-2 bg-white d-inline-block"
+								>
+									{selectedFieldValue.value}
+								</div>
+							);
+						})}
+					</div>
 				</div>
 
 				<div className="mt-2">
