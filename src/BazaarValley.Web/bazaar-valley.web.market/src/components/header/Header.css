@@ -1,0 +1,16 @@
+.header img {
+	height: 20px;
+}
+
+.header .top-bar {
+	height: 50px;
+}
+
+.header .main-bar {
+	height: 100px;
+}
+
+.small-column {
+	min-width: 150px;
+	width: 150px;
+}

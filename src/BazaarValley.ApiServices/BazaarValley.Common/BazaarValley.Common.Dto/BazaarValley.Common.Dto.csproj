@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BazaarValley.Domain\BazaarValley.Domain\BazaarValley.Domain.csproj" />
+    <ProjectReference Include="..\BazaarValley.Common.Enums\BazaarValley.Common.Enums.csproj" />
+  </ItemGroup>
 </Project>

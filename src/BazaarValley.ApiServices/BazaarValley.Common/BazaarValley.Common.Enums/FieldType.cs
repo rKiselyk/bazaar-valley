@@ -1,6 +1,6 @@
-﻿namespace BazaarValley.Common.Enums;
+namespace BazaarValley.Common.Enums;
 
-public enum FieldType: ushort
+public enum FieldType : ushort
 {
     Input = 1,
     Textarea,

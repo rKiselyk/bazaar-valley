@@ -1,0 +1,11 @@
+.app-container {
+	background-color: #fafafa;
+
+	max-width: 1600px;
+
+	margin-left: calc((100% - 1600px) / 2);
+}
+
+.main-container {
+	padding: 25px;
+}
