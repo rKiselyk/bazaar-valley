@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { connect } from "react-redux";
-import PropTypes, { func } from "prop-types";
+import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import * as categoryActions from "../../redux/actions/categoryActions";
 import * as itemActions from "../../redux/actions/itemActions";
@@ -12,7 +12,6 @@ import useFetch from "../../hooks/useFetch";
 
 function ItemsPage({ categories, items, loading, actions }) {
 	const { categoryId } = useParams();
-
 	const [category, setCategory] = useState({});
 	const [selectedFieldValues, setSelectedFieldValues] = useState([]);
 

@@ -52,4 +52,14 @@ public class ItemService : IItemService
 
         return items;
     }
+
+    public async Task<ItemDto> GetInfoAsync(int itemId)
+    {
+        var existingItem = await _applicationContext.Items.Where(item => item.Id == itemId).Include(item => item.Fields).FirstAsync();
+        var itemInfo = _mapper.Map<ItemDto>(existingItem);
+
+        itemInfo.Images = await _imageService.GetAsync(itemId);
+
+        return itemInfo;
+    }
 }

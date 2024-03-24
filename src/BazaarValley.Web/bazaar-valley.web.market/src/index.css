@@ -43,3 +43,7 @@ code {
 .ml-5 {
 	margin-left: 3rem !important;
 }
+
+.cursor-pointer {
+	cursor: pointer !important;
+}

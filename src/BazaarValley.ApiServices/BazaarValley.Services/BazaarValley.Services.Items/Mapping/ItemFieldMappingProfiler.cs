@@ -9,5 +9,6 @@ public class ItemFieldMappingProfiler : Profile
     public ItemFieldMappingProfiler()
     {
         CreateMap<ItemFieldModel, ItemFieldBaseDto>();
+        CreateMap<ItemFieldModel, ItemFieldDto>();
     }
 }

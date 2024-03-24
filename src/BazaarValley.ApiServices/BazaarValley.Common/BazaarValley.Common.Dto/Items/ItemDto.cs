@@ -4,6 +4,8 @@ public class ItemDto : ItemBaseDto
 {
     public string Description { get; set; }
 
+    public IEnumerable<ItemFieldDto> Fields { get; set; }
+
     public int ShopId { get; set; }
     public int CategoryId { get; set; }
 

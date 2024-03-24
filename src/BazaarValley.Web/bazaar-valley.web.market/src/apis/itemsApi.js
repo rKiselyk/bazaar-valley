@@ -10,3 +10,9 @@ export function getItems(categoryId, fieldValues) {
 		.then(handleResponse)
 		.catch(handleError);
 }
+
+export function getItemInfo(itemId) {
+	return fetch(`${itemsUrl}/${itemId}`)
+		.then(handleResponse)
+		.catch(handleError);
+}

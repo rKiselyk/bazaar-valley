@@ -25,4 +25,11 @@ public class ItemsController : Controller
         var items = await _itemService.GetAsync(itemsFilter);
         return items;
     }
+
+    [HttpGet("{itemId}")]
+    public async Task<ItemDto> GetInfoAsync(int itemId)
+    {
+        var itemInfo = await _itemService.GetInfoAsync(itemId);
+        return itemInfo;
+    }
 }

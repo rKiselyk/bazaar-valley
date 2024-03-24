@@ -1,7 +1,6 @@
 ﻿namespace BazaarValley.Common.Dto.Items;
 
-public class ItemFieldBaseDto
+public class ItemFieldDto : ItemFieldBaseDto
 {
-    public int Id { get; set; }
-    public string Value { get; set; }
+    public int CategoryFieldId { get; set; }
 }

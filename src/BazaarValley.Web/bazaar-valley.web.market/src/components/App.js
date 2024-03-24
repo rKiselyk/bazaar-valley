@@ -7,6 +7,7 @@ import PageNotFound from "./common/PageNotFound";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ItemsPage from "./items/ItemsPage";
+import ItemDetailsPage from "./items/item-details/ItemDetailsPage";
 
 function App() {
 	return (
@@ -19,6 +20,10 @@ function App() {
 						<Route
 							path="/category/:categoryId"
 							element={<ItemsPage />}
+						/>
+						<Route
+							path="/category/:categoryId/items/:itemId"
+							element={<ItemDetailsPage />}
 						/>
 						<Route path="*" element={<PageNotFound />} />
 					</Routes>
