@@ -1,4 +1,4 @@
-﻿namespace BazaarValley.Common.Enums;
+namespace BazaarValley.Common.Enums;
 
 public enum FieldType : ushort
 {
