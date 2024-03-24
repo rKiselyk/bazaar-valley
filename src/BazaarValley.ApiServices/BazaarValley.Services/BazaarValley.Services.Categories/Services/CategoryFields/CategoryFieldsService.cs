@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BazaarValley.Common.Dto.Categories;
-using BazaarValley.Common.Dto.Items;
 using BazaarValley.Dal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -42,7 +41,7 @@ public class CategoryFieldsService : ICategoryFieldsService
             fieldsValues.Add(new CategoryFieldValueDto
             {
                 Field = _mapper.Map<CategoryFieldDto>(categoryField),
-                Values = _mapper.Map<IEnumerable<ItemFieldBaseDto>>(values)
+                Values = values.Select(value => value.Value).Distinct()
             });
         }
 

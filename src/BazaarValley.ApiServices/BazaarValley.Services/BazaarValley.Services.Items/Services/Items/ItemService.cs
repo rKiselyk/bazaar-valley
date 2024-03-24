@@ -26,9 +26,9 @@ public class ItemService : IItemService
         _imageService = imageService;
     }
 
-    public async Task<IEnumerable<ItemBaseDto>> GetAsync()
+    public async Task<IEnumerable<ItemBaseDto>> GetAsync(ItemFilterDto itemFilterDto)
     {
-        var existingItems = await _applicationContext.Items.ToListAsync();
+        var existingItems = await _applicationContext.Items.Where(item => item.CategoryId == itemFilterDto.CategoryId).ToListAsync();
         var items = _mapper.Map<IEnumerable<ItemBaseDto>>(existingItems);
         foreach (var item in items)
         {

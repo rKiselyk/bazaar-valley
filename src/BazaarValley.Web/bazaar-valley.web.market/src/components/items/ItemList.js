@@ -27,10 +27,9 @@ function ItemList({ items }) {
 							<Card.Body>
 								<Card.Title>{item.title}</Card.Title>
 								<Card.Text>
-									This is a wider card with supporting text
-									below as a natural lead-in to additional
-									content. This content is a little bit
-									longer.
+									<label className="fs-4">
+										Price: ${item.price}
+									</label>
 								</Card.Text>
 							</Card.Body>
 							<Card.Footer>

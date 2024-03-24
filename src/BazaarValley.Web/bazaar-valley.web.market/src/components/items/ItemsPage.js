@@ -8,11 +8,19 @@ import * as itemActions from "../../redux/actions/itemActions";
 import Loader from "../common/Loader";
 import FieldFilter from "./FieldFilter";
 import ItemList from "./ItemList";
+import useFetch from "../../hooks/useFetch";
 
 function ItemsPage({ categories, items, loading, actions }) {
 	const { categoryId } = useParams();
 
 	const [category, setCategory] = useState({});
+	//const [fieldsValues, setFieldsValues] = useState({});
+
+	const {
+		data: fieldsValues,
+		error,
+		loading: loadingFieldsValues
+	} = useFetch(`/Categories/${categoryId}/fields/values`);
 
 	useEffect(() => {
 		if (categories.length === 0) {
@@ -20,25 +28,32 @@ function ItemsPage({ categories, items, loading, actions }) {
 				alert("Loading courses failed" + error);
 			});
 		}
-	}, [categories, actions]);
 
-	useEffect(() => {
-		if (items.length === 0) {
-			actions.loadItems().catch((error) => {
-				alert("Loading courses failed" + error);
-			});
-		}
-	}, [categoryId, items, actions]);
+		actions.loadItems(categoryId).catch((error) => {
+			alert("Loading courses failed" + error);
+		});
 
-	useEffect(() => {
 		const selectedCategory = categories.find(
 			(category) => category.id === parseInt(categoryId)
 		);
 
 		setCategory(selectedCategory);
-	}, [categoryId, categories]);
+	}, []);
 
-	if (loading || !category)
+	// useEffect(() => {
+	// 	const selectedCategory = categories.find(
+	// 		(category) => category.id === parseInt(categoryId)
+	// 	);
+
+	// 	setCategory(selectedCategory);
+	// }, [categoryId, categories]);
+
+	if (error) {
+		alert(error);
+		return;
+	}
+
+	if (loading || !category || loadingFieldsValues)
 		return (
 			<div className="d-flex align-items-center justify-content-center">
 				<Loader />
@@ -48,8 +63,13 @@ function ItemsPage({ categories, items, loading, actions }) {
 	return (
 		<div className="category-items d-flex">
 			<div className="w-25 d-flex flex-column">
-				{category?.fields?.map((field) => {
-					return <FieldFilter key={field.id} {...field} />;
+				{fieldsValues?.map((fieldValues) => {
+					return (
+						<FieldFilter
+							key={fieldValues.field.id}
+							{...fieldValues}
+						/>
+					);
 				})}
 			</div>
 			<div className="w-100 ml-5 d-flex flex-column">

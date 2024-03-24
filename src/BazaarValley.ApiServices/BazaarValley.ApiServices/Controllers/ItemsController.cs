@@ -20,9 +20,9 @@ public class ItemsController : Controller
     }
 
     [HttpGet]
-    public async Task<IEnumerable<ItemBaseDto>> Get() // TODO Add filtering
+    public async Task<IEnumerable<ItemBaseDto>> Get([FromQuery] ItemFilterDto itemsFilter) // TODO Add filtering
     {
-        var items = await _itemService.GetAsync();
+        var items = await _itemService.GetAsync(itemsFilter);
         return items;
     }
 }

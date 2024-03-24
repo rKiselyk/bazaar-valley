@@ -5,14 +5,10 @@ import Collapse from "react-bootstrap/Collapse";
 
 import "./FieldFilter.css";
 
-function FieldFilter({ id, isPrimary, name }) {
-	const [open, setOpen] = useState(isPrimary);
+function FieldFilter({ field, values }) {
+	const { id, isPrimary, name } = field;
 
-	const randomValue = [
-		{ id: 1, name: "name 1" },
-		{ id: 2, name: "name 2" },
-		{ id: 3, name: "name 3" }
-	];
+	const [open, setOpen] = useState(isPrimary);
 
 	return (
 		<div className="d-flex flex-column p-4 bg-white with-border">
@@ -36,14 +32,14 @@ function FieldFilter({ id, isPrimary, name }) {
 			</div>
 			<Collapse in={open}>
 				<div id="example-collapse-text">
-					{randomValue.map((value) => {
+					{values.map((value) => {
 						return (
 							<Form.Check
 								key={value.id}
 								className="fs-5"
 								type="checkbox"
-								id={`${name}-${value.id}`}
-								label={value.name}
+								id={`${name}-${id}-${value}`}
+								label={value}
 							/>
 						);
 					})}
