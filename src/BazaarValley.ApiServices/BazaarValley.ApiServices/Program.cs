@@ -1,5 +1,6 @@
 using AutoMapper;
 using BazaarValley.Dal;
+
 using BazaarValley.Services.Categories;
 using BazaarValley.Services.Categories.Mapping;
 using BazaarValley.Services.Items;
@@ -49,6 +50,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.ComposeUserServices();
+
+builder.Services.ComposeUserMapping();
+
+builder.Services.AddDbContext<ApplicationContext>();
 
 var app = builder.Build();
 
