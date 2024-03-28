@@ -51,10 +51,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.ComposeUserServices();
-
-builder.Services.ComposeUserMapping();
-
 builder.Services.AddDbContext<ApplicationContext>();
 
 var app = builder.Build();
