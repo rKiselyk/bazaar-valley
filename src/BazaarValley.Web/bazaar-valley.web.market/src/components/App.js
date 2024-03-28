@@ -8,6 +8,8 @@ import PageNotFound from "./common/PageNotFound";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ItemsPage from "./items/ItemsPage";
 import ItemDetailsPage from "./items/item-details/ItemDetailsPage";
+import CartPage from "./cart/CartPage";
+import UserDetailsPage from "./users/UserDetailsPage";
 
 function App() {
 	return (
@@ -17,10 +19,12 @@ function App() {
 				<main className="main-container">
 					<Routes>
 						<Route exect path="/" element={<HomePage />} />
+						<Route path="/account" element={<UserDetailsPage />} />
 						<Route
 							path="/category/:categoryId"
 							element={<ItemsPage />}
 						/>
+						<Route path="/cart" element={<CartPage />} />
 						<Route
 							path="/category/:categoryId/items/:itemId"
 							element={<ItemDetailsPage />}

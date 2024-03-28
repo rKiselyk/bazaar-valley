@@ -14,7 +14,6 @@ function FieldFilter({
 	const [open, setOpen] = useState(field.isPrimary);
 
 	function handleChangeFieldValue(fieldValue) {
-		console.log(fieldValue);
 		if (isSelected(fieldValue)) {
 			setSelectedFieldValues(
 				selectedFieldValues.filter(

@@ -10,6 +10,9 @@ import FieldFilter from "./FieldFilter";
 import ItemList from "./ItemList";
 import useFetch from "../../hooks/useFetch";
 
+import Form from "react-bootstrap/Form";
+import RangeInput from "../common/RangeInput";
+
 function ItemsPage({ categories, items, loading, actions }) {
 	const { categoryId } = useParams();
 	const [category, setCategory] = useState({});
@@ -60,6 +63,15 @@ function ItemsPage({ categories, items, loading, actions }) {
 	return (
 		<div className="category-items d-flex">
 			<div className="w-25 d-flex flex-column">
+				<div className="d-flex flex-column p-4 bg-white with-border">
+					<Form.Label className="font-weight-bold text-uppercase fs-4">
+						PRICE
+					</Form.Label>
+					<RangeInput
+						min={Math.min(...items.map((item) => item.price))}
+						max={Math.max(...items.map((item) => item.price))}
+					/>
+				</div>
 				{fieldsValues?.map((fieldValues) => {
 					return (
 						<FieldFilter

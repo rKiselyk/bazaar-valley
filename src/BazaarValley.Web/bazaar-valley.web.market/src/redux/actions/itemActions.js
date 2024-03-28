@@ -8,7 +8,7 @@ export function loadItemsSuccess(items) {
 
 export function loadItems(categoryId, fieldValues) {
 	return function (dispatch) {
-		//dispatch(beginApiCall());
+		dispatch(beginApiCall());
 
 		return itemsApi
 			.getItems(categoryId, fieldValues)

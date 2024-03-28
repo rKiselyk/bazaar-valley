@@ -4,12 +4,17 @@ import "./index.css";
 import App from "../src/components/App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider as ReduxProvider } from "react-redux";
-import configureStore from "./redux/configureStore";
+import configureStore, { loadState, saveState } from "./redux/configureStore";
 
 // Importing the Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const store = configureStore();
+const persistedState = loadState();
+const store = configureStore(persistedState);
+
+store.subscribe(() => {
+	saveState(store.getState());
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

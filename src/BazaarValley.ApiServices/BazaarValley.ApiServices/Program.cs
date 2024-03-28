@@ -1,7 +1,11 @@
+using AutoMapper;
 using BazaarValley.Dal;
 using BazaarValley.Services.Categories;
+using BazaarValley.Services.Categories.Mapping;
 using BazaarValley.Services.Items;
+using BazaarValley.Services.Items.Mapping;
 using BazaarValley.Services.Users;
+using BazaarValley.Services.Users.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +17,22 @@ builder.Services.ComposeItemServices();
 #endregion
 
 #region Compose Custom Mapping
-builder.Services.ComposeUserMapping();
-builder.Services.ComposeCategoryMapping();
-builder.Services.ComposeItemMapping();
+// builder.Services.ComposeUserMapping();
+// builder.Services.ComposeCategoryMapping();
+// builder.Services.ComposeItemMapping();
+
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new UserMappingProfile());
+    mc.AddProfile(new CategoryMappingProfile());
+    mc.AddProfile(new CategoryFieldsMappingProfile());
+    mc.AddProfile(new ItemMappingProfiler());
+    mc.AddProfile(new ItemImageMappingProfiler());
+    mc.AddProfile(new ItemFieldMappingProfiler());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 #endregion
 
 builder.Services.AddDbContext<ApplicationContext>();

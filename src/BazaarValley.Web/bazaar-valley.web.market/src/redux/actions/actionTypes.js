@@ -4,5 +4,19 @@ export const LOAD_CATEGORY_FIELDS_VALUES_SUCCESS =
 
 export const LOAD_ITEMS_SUCCESS = "LOAD_ITEMS_SUCCESS";
 
+//#region Cart Actions
+export const ADD_TO_CART = "ADD_TO_CART";
+export const INCREASE_QUANTITY = "INCREASE_QUANTITY";
+export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
+//#endregion
+
+//#region User Actions
+export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
+export const USER_LOGOUT_SUCCESS = "USER_LOGOUT_SUCCESS";
+export const USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS";
+//#endregion
+
+//#region Api Call Actions
 export const BEGIN_API_CALL = "BEGIN_API_CALL";
 export const API_CALL_ERROR = "API_CALL_ERROR";
+//#endregion

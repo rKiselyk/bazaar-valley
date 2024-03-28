@@ -26,6 +26,13 @@ public class UsersController : Controller
         return userInfo;
     }
 
+    [HttpPost("login")]
+    public async Task<UserDto> Login(UserLoginDto userLogin)
+    {
+        var userInfo = await _userService.LoginAsync(userLogin);
+        return userInfo;
+    }
+
     [HttpGet("{userId}")]
     public async Task<UserDto> Get(int userId)
     {

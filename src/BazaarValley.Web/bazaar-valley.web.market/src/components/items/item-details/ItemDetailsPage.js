@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import * as categoryActions from "../../../redux/actions/categoryActions";
+import * as cartActions from "../../../redux/actions/cartActions";
 
 import Carousel from "react-bootstrap/Carousel";
 import Loader from "../../common/Loader";
@@ -35,9 +36,7 @@ function ItemDetailsPage({ categories, loading, actions }) {
 		loading: loadingItemInfo
 	} = useFetch(`/Items/${itemId}`);
 
-	console.log(itemInfo);
-
-	if (loadingItemInfo || !itemInfo || loading)
+	if (!itemInfo || !category)
 		return (
 			<div className="d-flex align-items-center justify-content-center">
 				<Loader />
@@ -71,7 +70,7 @@ function ItemDetailsPage({ categories, loading, actions }) {
 						<tbody>
 							{category.fields.map((field) => {
 								return (
-									<tr>
+									<tr key={field.id}>
 										<td>{field.name}</td>
 										<td>
 											{itemInfo.fields.find(
@@ -87,7 +86,20 @@ function ItemDetailsPage({ categories, loading, actions }) {
 					</Table>
 				</div>
 
-				<Button variant="primary" size="lg">
+				<Button
+					variant="primary"
+					size="lg"
+					onClick={() =>
+						actions.addToCart({
+							id: itemInfo.id,
+							categoryId: parseInt(categoryId),
+							image: itemInfo.images[0].blob,
+							title: itemInfo.title,
+							quantity: 1,
+							price: itemInfo.price
+						})
+					}
+				>
 					Add To Cart
 				</Button>
 			</div>
@@ -115,7 +127,8 @@ function mapDispatchToProps(dispatch) {
 			loadCategories: bindActionCreators(
 				categoryActions.loadCategories,
 				dispatch
-			)
+			),
+			addToCart: bindActionCreators(cartActions.addToCart, dispatch)
 		}
 	};
 }

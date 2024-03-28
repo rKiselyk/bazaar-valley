@@ -44,6 +44,10 @@ code {
 	margin-left: 3rem !important;
 }
 
+.mt-5 {
+	margin-top: 3rem !important;
+}
+
 .cursor-pointer {
 	cursor: pointer !important;
 }
