@@ -6,11 +6,14 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import * as categoryActions from "../../../redux/actions/categoryActions";
 import * as cartActions from "../../../redux/actions/cartActions";
+import * as comparisonListActions from "../../../redux/actions/comparisonListActions";
 
+import { NavLink } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import Loader from "../../common/Loader";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 function ItemDetailsPage({ categories, loading, actions }) {
 	const { categoryId, itemId } = useParams();
@@ -44,64 +47,105 @@ function ItemDetailsPage({ categories, loading, actions }) {
 		);
 
 	return (
-		<div className="d-flex">
-			<div className="d-flex flex-column with-border w-50 bg-white p-5">
-				<Carousel data-bs-theme="dark">
-					{itemInfo.images.map((image) => {
-						return (
-							<Carousel.Item key={image.id}>
-								<img
-									className="d-block w-100"
-									src={image.blob}
-									alt="Second slide"
-								/>
-							</Carousel.Item>
-						);
-					})}
-				</Carousel>
+		<div className="d-flex flex-column">
+			<div className="d-flex">
+				<Breadcrumb>
+					<Breadcrumb.Item>
+						<NavLink className="px-3" to="/">
+							HOME
+						</NavLink>
+					</Breadcrumb.Item>
+					<Breadcrumb.Item>
+						<NavLink
+							className="px-3"
+							to={"/category/" + categoryId}
+						>
+							{category.name}
+						</NavLink>
+					</Breadcrumb.Item>
+					<Breadcrumb.Item active>
+						<label className="px-3">{itemInfo.title}</label>
+					</Breadcrumb.Item>
+				</Breadcrumb>
 			</div>
-			<div className="d-flex flex-column with-border w-50 bg-white p-5">
-				<label className="fs-1">{itemInfo.title}</label>
-				<label className="mt-2 fs-2">Price: ${itemInfo.price}</label>
-				<label className="mt-2 fs-4">{itemInfo.description}</label>
-				<div className="d-flex mt-2 flex-column">
-					<label className="fs-3">Сharacteristics</label>
-					<Table striped bordered hover>
-						<tbody>
-							{category.fields.map((field) => {
-								return (
-									<tr key={field.id}>
-										<td>{field.name}</td>
-										<td>
-											{itemInfo.fields.find(
-												(itemField) =>
-													itemField.categoryFieldId ===
-													field.id
-											)?.value || "-"}
-										</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</Table>
+			<div className="d-flex">
+				<div className="d-flex flex-column with-border w-50 bg-white p-5">
+					<Carousel data-bs-theme="dark">
+						{itemInfo.images.map((image) => {
+							return (
+								<Carousel.Item key={image.id}>
+									<img
+										className="d-block w-100"
+										src={image.blob}
+										alt="Second slide"
+									/>
+								</Carousel.Item>
+							);
+						})}
+					</Carousel>
 				</div>
+				<div className="d-flex flex-column with-border w-50 bg-white p-5">
+					<label className="fs-1">{itemInfo.title}</label>
+					<label className="mt-2 fs-2">
+						Price: ${itemInfo.price}
+					</label>
+					<label className="mt-2 fs-4">{itemInfo.description}</label>
+					<div className="d-flex mt-2 flex-column">
+						<label className="fs-3">Сharacteristics</label>
+						<Table striped bordered hover>
+							<tbody>
+								{category.fields.map((field) => {
+									return (
+										<tr key={field.id}>
+											<td>{field.name}</td>
+											<td>
+												{itemInfo.fields.find(
+													(itemField) =>
+														itemField.categoryFieldId ===
+														field.id
+												)?.value || "-"}
+											</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</Table>
+					</div>
 
-				<Button
-					variant="primary"
-					size="lg"
-					onClick={() =>
-						actions.addToCart({
-							id: itemInfo.id,
-							categoryId: parseInt(categoryId),
-							image: itemInfo.images[0].blob,
-							title: itemInfo.title,
-							quantity: 1,
-							price: itemInfo.price
-						})
-					}
-				>
-					Add To Cart
-				</Button>
+					<Button
+						variant="primary"
+						size="lg"
+						onClick={() =>
+							actions.addToCart({
+								id: itemInfo.id,
+								categoryId: parseInt(categoryId),
+								image: itemInfo.images[0].blob,
+								title: itemInfo.title,
+								quantity: 1,
+								price: itemInfo.price
+							})
+						}
+					>
+						Add To Cart
+					</Button>
+					<Button
+						className="mt-2"
+						variant="light"
+						size="lg"
+						onClick={() =>
+							actions.addToComparisonList({
+								id: itemInfo.id,
+								categoryId: parseInt(categoryId),
+								image: itemInfo.images[0].blob,
+								title: itemInfo.title,
+								price: itemInfo.price,
+								fields: itemInfo.fields
+							})
+						}
+					>
+						Add To Comparison List
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
@@ -128,7 +172,11 @@ function mapDispatchToProps(dispatch) {
 				categoryActions.loadCategories,
 				dispatch
 			),
-			addToCart: bindActionCreators(cartActions.addToCart, dispatch)
+			addToCart: bindActionCreators(cartActions.addToCart, dispatch),
+			addToComparisonList: bindActionCreators(
+				comparisonListActions.addToComparisonList,
+				dispatch
+			)
 		}
 	};
 }

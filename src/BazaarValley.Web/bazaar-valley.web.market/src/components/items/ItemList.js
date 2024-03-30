@@ -34,7 +34,11 @@ function ItemList({ items }) {
 								<Card.Title>{item.title}</Card.Title>
 								<Card.Text>
 									<label className="fs-4">
-										Price: ${item.price}
+										Price:{" "}
+										{item.discount && (
+											<del>${item.originPrice}</del>
+										)}{" "}
+										${item.price}
 									</label>
 								</Card.Text>
 							</Card.Body>

@@ -72,7 +72,7 @@ function UserPersonalInfo({ user }) {
 					</Form.Group>
 				</Row>
 
-				<Form.Group className="mb-3 mt-2">
+				<Form.Group className="mt-3">
 					{isEditable ? (
 						<Button
 							className="w-100"

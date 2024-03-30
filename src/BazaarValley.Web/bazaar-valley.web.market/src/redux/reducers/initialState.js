@@ -3,6 +3,7 @@ const initialState = {
 	items: [],
 	cart: [],
 	fieldsValues: [],
+	comparisonList: [],
 	user: null,
 	apiCallsInProgress: 0
 };

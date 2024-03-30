@@ -8,6 +8,8 @@ import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
+import Button from "react-bootstrap/Button";
+
 import UserPersonalInfo from "./tabs/userPersonalInfo";
 
 function UserDetailsPage({ user }) {
@@ -44,6 +46,14 @@ function UserDetailsPage({ user }) {
 							<Nav.Link eventKey="second">Tab 2</Nav.Link>
 						</Nav.Item>
 					</Nav>
+					<div className="d-flex flex-column mt-auto">
+						<Button className="w-100" variant="link">
+							Sign out
+						</Button>
+						<Button className="w-100 mt-2" variant="danger">
+							Delete account
+						</Button>
+					</div>
 				</Col>
 				<Col
 					sm={9}

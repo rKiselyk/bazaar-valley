@@ -10,6 +10,7 @@ import ItemsPage from "./items/ItemsPage";
 import ItemDetailsPage from "./items/item-details/ItemDetailsPage";
 import CartPage from "./cart/CartPage";
 import UserDetailsPage from "./users/UserDetailsPage";
+import ComparePage from "./compare/ComparePage";
 
 function App() {
 	return (
@@ -20,6 +21,7 @@ function App() {
 					<Routes>
 						<Route exect path="/" element={<HomePage />} />
 						<Route path="/account" element={<UserDetailsPage />} />
+						<Route path="/comparison" element={<ComparePage />} />
 						<Route
 							path="/category/:categoryId"
 							element={<ItemsPage />}

@@ -16,6 +16,11 @@ export const USER_LOGOUT_SUCCESS = "USER_LOGOUT_SUCCESS";
 export const USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS";
 //#endregion
 
+//#region Comparison List\
+export const ADD_TO_COMPARISON_LIST = "ADD_TO_COMPARISON_LIST";
+export const REMOVE_FROM_COMPARISON_LIST = "REMOVE_FROM_COMPARISON_LIST";
+//#endregion
+
 //#region Api Call Actions
 export const BEGIN_API_CALL = "BEGIN_API_CALL";
 export const API_CALL_ERROR = "API_CALL_ERROR";

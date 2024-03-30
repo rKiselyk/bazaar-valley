@@ -29,7 +29,9 @@ public class ItemService : IItemService
 
     public async Task<IEnumerable<ItemBaseDto>> GetAsync(ItemFilterDto itemFilterDto)
     {
-        var existingItems = await _applicationContext.Items.Where(item => item.CategoryId == itemFilterDto.CategoryId)
+        var random = new Random();
+
+        var existingItems = await _applicationContext.Items.Where(item => item.CategoryId == itemFilterDto.CategoryId && (!itemFilterDto.MaxPrice.HasValue || item.Price <= itemFilterDto.MaxPrice.Value))
             .Include(itemModel => itemModel.Fields).ToListAsync();
 
         var filteredByFields = new List<ItemModel>();
@@ -43,11 +45,11 @@ public class ItemService : IItemService
             filteredByFields = existingItems;
         }
 
-
         var items = _mapper.Map<IEnumerable<ItemBaseDto>>(filteredByFields);
         foreach (var item in items)
         {
             item.Images = await _imageService.GetPreviewAsync(item.Id);
+            item.Discount = Convert.ToBoolean(random.Next(0, 2)) ? random.Next(0, 100) : null;
         }
 
         return items;

@@ -1,3 +1,4 @@
+import { type } from "@testing-library/user-event/dist/type";
 import * as types from "../actions/actionTypes";
 import initialState from "./initialState";
 
@@ -43,6 +44,9 @@ export default function cartReducer(state = initialState.cart, action) {
 					  }
 					: item
 			);
+		}
+		case types.USER_LOGOUT_SUCCESS: {
+			return [];
 		}
 		default:
 			return state;

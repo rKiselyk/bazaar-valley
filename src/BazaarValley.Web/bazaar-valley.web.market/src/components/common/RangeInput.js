@@ -1,25 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form } from "react-bootstrap";
 import InputGroup from "react-bootstrap/InputGroup";
 
-const RangeInput = ({ min, max, label }) => {
-	const [value, setValue] = useState((min + max) / 2); // Initializes with the average of min and max
-
-	const handleChange = (event) => {
-		setValue(event.target.value);
-	};
-
+const RangeInput = ({ value, setValue, min, max }) => {
 	return (
-		<InputGroup>
-			<InputGroup.Text>{min}</InputGroup.Text>
+		<InputGroup className="d-flex align-items-center">
+			<InputGroup.Text className="bg-transparent border-0">
+				{min}
+			</InputGroup.Text>
 
 			<Form.Range
+				className="w-50 mx-2"
 				value={value}
 				min={min}
 				max={max}
-				onChange={handleChange}
+				onChange={(event) => setValue(event.target.value)}
 			/>
-			<InputGroup.Text>{max}</InputGroup.Text>
+			<InputGroup.Text className="bg-transparent border-0">
+				{max}
+			</InputGroup.Text>
 		</InputGroup>
 	);
 };

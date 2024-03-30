@@ -9,14 +9,18 @@ import Loader from "../common/Loader";
 import FieldFilter from "./FieldFilter";
 import ItemList from "./ItemList";
 import useFetch from "../../hooks/useFetch";
+import { NavLink } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+
 import RangeInput from "../common/RangeInput";
 
 function ItemsPage({ categories, items, loading, actions }) {
 	const { categoryId } = useParams();
 	const [category, setCategory] = useState({});
 	const [selectedFieldValues, setSelectedFieldValues] = useState([]);
+	const [maxPrice, setMaxPrice] = useState(null);
 
 	const {
 		data: fieldsValues,
@@ -43,17 +47,19 @@ function ItemsPage({ categories, items, loading, actions }) {
 	}, []);
 
 	useEffect(() => {
-		actions.loadItems(categoryId, selectedFieldValues).catch((error) => {
-			alert("Loading courses failed" + error);
-		});
-	}, [selectedFieldValues]);
+		actions
+			.loadItems(categoryId, selectedFieldValues, maxPrice)
+			.catch((error) => {
+				alert("Loading courses failed" + error);
+			});
+	}, [categoryId, selectedFieldValues, maxPrice]);
 
 	if (error) {
 		alert(error);
 		return;
 	}
 
-	if (loading || !category || loadingFieldsValues)
+	if (!category || loadingFieldsValues)
 		return (
 			<div className="d-flex align-items-center justify-content-center">
 				<Loader />
@@ -61,50 +67,74 @@ function ItemsPage({ categories, items, loading, actions }) {
 		);
 
 	return (
-		<div className="category-items d-flex">
-			<div className="w-25 d-flex flex-column">
-				<div className="d-flex flex-column p-4 bg-white with-border">
-					<Form.Label className="font-weight-bold text-uppercase fs-4">
-						PRICE
-					</Form.Label>
-					<RangeInput
-						min={Math.min(...items.map((item) => item.price))}
-						max={Math.max(...items.map((item) => item.price))}
-					/>
-				</div>
-				{fieldsValues?.map((fieldValues) => {
-					return (
-						<FieldFilter
-							key={fieldValues.field.id}
-							selectedFieldValues={selectedFieldValues}
-							setSelectedFieldValues={setSelectedFieldValues}
-							{...fieldValues}
-						/>
-					);
-				})}
+		<div className="category-items d-flex flex-column">
+			<div className="d-flex">
+				<Breadcrumb>
+					<Breadcrumb.Item>
+						<NavLink className="px-3" to="/">
+							HOME
+						</NavLink>
+					</Breadcrumb.Item>
+					<Breadcrumb.Item active>
+						<label className="px-3">{category.name}</label>
+					</Breadcrumb.Item>
+				</Breadcrumb>
 			</div>
-			<div className="w-100 ml-5 d-flex flex-column">
-				<div className="d-flex align-items-center">
-					<label className="fs-2 text-uppercase">
-						{category.name}
-					</label>
-					<label className="ml-2 fs-3">({items.length})</label>
-					<div className="ml-5 w-100 f-flex align-items-center">
-						{selectedFieldValues.map((selectedFieldValue) => {
-							return (
-								<div
-									key={selectedFieldValue.value}
-									className="ml-2 p-2 bg-white d-inline-block"
-								>
-									{selectedFieldValue.value}
-								</div>
-							);
-						})}
+			<div className="d-flex">
+				<div className="w-25 d-flex flex-column">
+					<div className="d-flex flex-column p-4 bg-white with-border">
+						<Form.Label className="font-weight-bold text-uppercase fs-4">
+							PRICE
+						</Form.Label>
+						<RangeInput
+							value={maxPrice}
+							min={0}
+							max={10000}
+							setValue={(value) => setMaxPrice(parseInt(value))}
+						/>
+						<Form.Label className="font-weight-bold text-uppercase">
+							Selected max price: {maxPrice}
+						</Form.Label>
 					</div>
+					{fieldsValues?.map((fieldValues) => {
+						return (
+							<FieldFilter
+								key={fieldValues.field.id}
+								selectedFieldValues={selectedFieldValues}
+								setSelectedFieldValues={setSelectedFieldValues}
+								{...fieldValues}
+							/>
+						);
+					})}
 				</div>
+				<div className="w-100 ml-5 d-flex flex-column">
+					<div className="d-flex align-items-center">
+						<label className="fs-2 text-uppercase">
+							{category.name}
+						</label>
+						<label className="ml-2 fs-3">({items.length})</label>
+						<div className="ml-5 w-100 f-flex align-items-center">
+							{maxPrice && (
+								<div className="ml-2 p-2 bg-white d-inline-block">
+									Max price: ${maxPrice}
+								</div>
+							)}
+							{selectedFieldValues.map((selectedFieldValue) => {
+								return (
+									<div
+										key={selectedFieldValue.value}
+										className="ml-2 p-2 bg-white d-inline-block"
+									>
+										{selectedFieldValue.value}
+									</div>
+								);
+							})}
+						</div>
+					</div>
 
-				<div className="mt-2">
-					<ItemList items={items} />
+					<div className="mt-2">
+						<ItemList items={items} />
+					</div>
 				</div>
 			</div>
 		</div>

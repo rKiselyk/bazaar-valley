@@ -17,6 +17,10 @@ export default function configureStore(initialState) {
 
 export const saveState = (state) => {
 	localStorage.setItem("cart", JSON.stringify(state.cart || []));
+	localStorage.setItem(
+		"comparisonList",
+		JSON.stringify(state.comparisonList || [])
+	);
 	localStorage.setItem("user", JSON.stringify(state.user));
 };
 
@@ -24,7 +28,9 @@ export const loadState = () => {
 	try {
 		return {
 			...initialState,
-			cart: JSON.parse(localStorage.getItem("cart")),
+			cart: JSON.parse(localStorage.getItem("cart")) || [],
+			comparisonList:
+				JSON.parse(localStorage.getItem("comparisonList")) || [],
 			user: JSON.parse(localStorage.getItem("user"))
 		};
 	} catch (err) {
