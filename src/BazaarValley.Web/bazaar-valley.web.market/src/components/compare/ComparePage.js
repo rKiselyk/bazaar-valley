@@ -23,8 +23,6 @@ function ComparePage({ comparisonList, categories, actions }) {
 
 	useEffect(() => {
 		const categoryId = comparisonList[0]?.categoryId;
-		debugger;
-
 		if (!categoryId) return;
 
 		const selectedCategory = categories.find(
@@ -35,7 +33,11 @@ function ComparePage({ comparisonList, categories, actions }) {
 	}, [comparisonList]);
 
 	if (!category?.fields || !comparisonList.length) {
-		return <label>No items to compare</label>;
+		return (
+			<div className="d-flex flex-column p-5 bg-white with-border">
+				<label className="fs-2">No items to compare</label>
+			</div>
+		);
 	}
 
 	return (

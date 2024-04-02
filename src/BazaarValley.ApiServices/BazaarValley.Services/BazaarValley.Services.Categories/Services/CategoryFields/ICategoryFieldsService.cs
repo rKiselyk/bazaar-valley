@@ -6,5 +6,5 @@ public interface ICategoryFieldsService
 {
     Task<IEnumerable<CategoryFieldDto>> GetForCategory(int categoryId);
 
-    Task<IEnumerable<CategoryFieldValueDto>> GetFieldsValuesAsync(int categoryId);
+    Task<CategoryAvailableFiltersDto> GetAvailableFiltersAsync(int categoryId);
 }

@@ -48,6 +48,9 @@ export default function cartReducer(state = initialState.cart, action) {
 		case types.USER_LOGOUT_SUCCESS: {
 			return [];
 		}
+		case types.BUY_CART_SUCCESS: {
+			return [];
+		}
 		default:
 			return state;
 	}

@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import InputGroup from "react-bootstrap/InputGroup";
 
-const RangeInput = ({ value, setValue, min, max }) => {
+const RangeInput = ({ value, setValue, min = 0, max }) => {
 	return (
 		<InputGroup className="d-flex align-items-center">
 			<InputGroup.Text className="bg-transparent border-0">

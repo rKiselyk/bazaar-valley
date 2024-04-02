@@ -8,8 +8,8 @@ import { bindActionCreators } from "redux";
 import * as userActions from "../../redux/actions/userActions";
 
 import "./Header.css";
-import UserLoginModal from "../users/UserLoginModal";
-import UserSignUpModal from "../users/UserSignUpModal";
+import UserLoginModal from "../users/modals/UserLoginModal";
+import UserSignUpModal from "../users/modals/UserSignUpModal";
 
 function Header({ cart, user, comparisonList, actions }) {
 	const [loginModalShow, setloginModalShow] = useState(false);

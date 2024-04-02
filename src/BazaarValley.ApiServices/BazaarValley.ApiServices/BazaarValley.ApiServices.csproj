@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BazaarValley.Dal\BazaarValley.Dal\BazaarValley.Dal.csproj" />
+    <ProjectReference Include="..\BazaarValley.Services\BazaarValley.Services.Cart\BazaarValley.Services.Cart.csproj" />
 
     <ProjectReference Include="..\BazaarValley.Services\BazaarValley.Services.Categories\BazaarValley.Services.Categories.csproj" />
     <ProjectReference Include="..\BazaarValley.Services\BazaarValley.Services.Items\BazaarValley.Services.Items.csproj" />

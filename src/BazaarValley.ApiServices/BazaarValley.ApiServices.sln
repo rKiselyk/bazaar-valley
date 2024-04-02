@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BazaarValley.Services.Categ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BazaarValley.Services.Items", "BazaarValley.Services\BazaarValley.Services.Items\BazaarValley.Services.Items.csproj", "{3A380C6F-5E65-487F-A560-E620BE8563F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BazaarValley.Services.Cart", "BazaarValley.Services\BazaarValley.Services.Cart\BazaarValley.Services.Cart.csproj", "{480283EC-0B6C-4F8C-93DF-665C419D8A03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{3A380C6F-5E65-487F-A560-E620BE8563F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A380C6F-5E65-487F-A560-E620BE8563F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A380C6F-5E65-487F-A560-E620BE8563F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{480283EC-0B6C-4F8C-93DF-665C419D8A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{480283EC-0B6C-4F8C-93DF-665C419D8A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{480283EC-0B6C-4F8C-93DF-665C419D8A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{480283EC-0B6C-4F8C-93DF-665C419D8A03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +82,7 @@ Global
 		{457DFA87-DA4C-4AA8-84D9-F5F3DE41B6AE} = {50EBE971-D0D7-49EB-AF13-5CC34F57259E}
 		{46EDE1D6-8BD8-42DD-85E8-D9F04E6C84E0} = {7DD267C0-C972-42D6-98E1-53CFE6EF25CA}
 		{3A380C6F-5E65-487F-A560-E620BE8563F9} = {7DD267C0-C972-42D6-98E1-53CFE6EF25CA}
+		{480283EC-0B6C-4F8C-93DF-665C419D8A03} = {7DD267C0-C972-42D6-98E1-53CFE6EF25CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5044AF74-E56A-4255-A47B-F48689801401}

@@ -1,6 +1,6 @@
 using AutoMapper;
 using BazaarValley.Dal;
-
+using BazaarValley.Services.Cart;
 using BazaarValley.Services.Categories;
 using BazaarValley.Services.Categories.Mapping;
 using BazaarValley.Services.Items;
@@ -15,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ComposeUserServices();
 builder.Services.ComposeCategoryServices();
 builder.Services.ComposeItemServices();
+builder.Services.ComposeCartServices();
 #endregion
 
 #region Compose Custom Mapping

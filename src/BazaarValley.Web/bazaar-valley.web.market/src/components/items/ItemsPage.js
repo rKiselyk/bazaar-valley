@@ -7,26 +7,34 @@ import * as categoryActions from "../../redux/actions/categoryActions";
 import * as itemActions from "../../redux/actions/itemActions";
 import Loader from "../common/Loader";
 import FieldFilter from "./FieldFilter";
-import ItemList from "./ItemList";
+import GridViewItems from "./item-list/GridViewItems";
 import useFetch from "../../hooks/useFetch";
 import { NavLink } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 import RangeInput from "../common/RangeInput";
 
+import "./ItemsPage.css";
+import TableRowItems from "./item-list/TableRowItems";
+
 function ItemsPage({ categories, items, loading, actions }) {
 	const { categoryId } = useParams();
+
 	const [category, setCategory] = useState({});
 	const [selectedFieldValues, setSelectedFieldValues] = useState([]);
-	const [maxPrice, setMaxPrice] = useState(null);
+	const [maxPrice, setMaxPrice] = useState(undefined);
+	const [orderProperty, setOrderProperty] = useState(undefined);
+	const [isGridView, setIsGridView] = useState(true);
 
 	const {
-		data: fieldsValues,
+		data: availibleFilters,
 		error,
 		loading: loadingFieldsValues
-	} = useFetch(`/Categories/${categoryId}/fields/values`);
+	} = useFetch(`/Categories/${categoryId}/available-filters`);
 
 	useEffect(() => {
 		if (categories.length === 0) {
@@ -88,15 +96,14 @@ function ItemsPage({ categories, items, loading, actions }) {
 						</Form.Label>
 						<RangeInput
 							value={maxPrice}
-							min={0}
-							max={10000}
+							max={availibleFilters.maxPrice}
 							setValue={(value) => setMaxPrice(parseInt(value))}
 						/>
-						<Form.Label className="font-weight-bold text-uppercase">
-							Selected max price: {maxPrice}
+						<Form.Label className="text-uppercase mt-2">
+							Selected max price: ${maxPrice}
 						</Form.Label>
 					</div>
-					{fieldsValues?.map((fieldValues) => {
+					{availibleFilters.fieldValues?.map((fieldValues) => {
 						return (
 							<FieldFilter
 								key={fieldValues.field.id}
@@ -132,8 +139,97 @@ function ItemsPage({ categories, items, loading, actions }) {
 						</div>
 					</div>
 
+					<div className="bg-white with-border d-flex w-100">
+						<ButtonGroup
+							size="lg"
+							className="w-100"
+							onClick={() => setOrderProperty("")}
+						>
+							<Button variant="light" className="bg-white">
+								<label>POPULAR FIRST</label>
+							</Button>
+							<Button
+								variant="light"
+								className="bg-white"
+								onClick={() => setOrderProperty("")}
+							>
+								<label>NEWEST FIRST</label>
+							</Button>
+							<Button
+								variant="light"
+								className={
+									"bg-white" +
+									(orderProperty === "price"
+										? "active-sort-button"
+										: "")
+								}
+								onClick={() => {
+									setOrderProperty("price");
+									actions.sortItems(orderProperty);
+								}}
+							>
+								<label>CHIPEST FIRST</label>
+							</Button>
+							<Button
+								variant="light"
+								className={
+									"bg-white" +
+									(orderProperty === "discount"
+										? "active-sort-button"
+										: "")
+								}
+								onClick={() => {
+									setOrderProperty("discount");
+									actions.sortItems(orderProperty);
+								}}
+							>
+								<label>DISCOUNTS FIRST</label>
+							</Button>
+							<div className="d-flex ml-auto mx-2">
+								<Button
+									variant="light"
+									className={
+										"bg-white" +
+										(isGridView ? "active-sort-button" : "")
+									}
+									onClick={() => {
+										setIsGridView(true);
+									}}
+								>
+									<img
+										style={{ height: 50 }}
+										className="mx-2"
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAABaElEQVR4nO3bMW6EMBAF0Dlets79m2yRKmeYNEkRWTJiTcBj3pPoRh8YWwJ2tBEAAAAAAAAAwF7vEfEVEbnzeEbEQ36M9qfx+cJi/B4f8mO0P40cPOTHUH8sSMy1oTZPqP7c/gwHqO+zIFF7Q01/gXmz+s0Ab1mTPdQtyMUL8vznDx/5Oz1+GvvKYrzJj9H+AMBhzEOu7U/DPOTa/jR8GPb5Uo+x346q/dKweUL15/ZnOEB9nwWJ2htq+gvMm9Uv91DM4vnL3VAWz2+YV1zbn4Z5yLX9AYDDmIf0mYfEvtfG6vOc5T6ssnj+cjeUxfM3T6j+3P4MB6jvsyBRe0NNf4F5s/rlHopZPH+5G8ri+Q3zkD7zkLjX/08A4DDmIX3mIfH3TWWLechkH1ZZPH+5G8ri+ZsnVH9uf4YD1PdZkKi9oaa/wLxZ/XIPxSyev9wNZfH8hnlIn3lIzDWvMA8BAAAAAAAAgDjPN8RKvDh3G1mbAAAAAElFTkSuQmCC"
+									/>
+								</Button>
+								<Button
+									variant="light"
+									className={
+										"bg-white" +
+										(!isGridView
+											? "active-sort-button"
+											: "")
+									}
+									onClick={() => {
+										setIsGridView(false);
+									}}
+								>
+									<img
+										style={{ height: 50 }}
+										className="mx-2"
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAABOElEQVR4nO3bMU7DQBQE0DkSxyA1h0JckoIgUVEiSkeRoHZMZHvwvif9apu1R3Ycj5wAAAAAAHBMT0k+k0wzc05y2nuzI/i4IYzfedt7syOYFg4rE0iZuStgbv0lyfcfgp0Gm9dbf4PvCeSh4ECnfzTvAslYgVw9J/kqONjpqLesuWFlAilzXhCKP4YbOP2c6FvCeNxiQwAAAGxLp15Gp17Gy8UyAilzb0GlU8+6BdWSdZ16Ft1hdOoZLJArnXp06ofmKauMTr2MTh0AAGBwOvUyOvUyXi6WEUgZnXo2aQt16tm/stWpZ/+TrlPPwW9Zc8PKBFJGp15Gpw4AADA4nXoZnXoZLxfLCKTMXN8xt+479axbUC1Z9516uipcgaQrkCvfqUenfmiessro1Mvo1AEAAAAAIPe4AEoKoPfgrzWHAAAAAElFTkSuQmCC"
+									/>
+								</Button>
+							</div>
+						</ButtonGroup>
+					</div>
+
 					<div className="mt-2">
-						<ItemList items={items} />
+						{isGridView ? (
+							<GridViewItems items={items} />
+						) : (
+							<TableRowItems items={items} />
+						)}
 					</div>
 				</div>
 			</div>
@@ -164,6 +260,7 @@ function mapDispatchToProps(dispatch) {
 				dispatch
 			),
 			loadItems: bindActionCreators(itemActions.loadItems, dispatch),
+			sortItems: bindActionCreators(itemActions.sortItems, dispatch),
 			loadCategoryFieldsValues: bindActionCreators(
 				categoryActions.loadCategoryFieldsValues,
 				dispatch

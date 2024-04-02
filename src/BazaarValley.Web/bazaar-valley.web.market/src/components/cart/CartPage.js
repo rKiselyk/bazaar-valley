@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
@@ -10,9 +10,13 @@ import Button from "react-bootstrap/Button";
 
 import "./CartPage.css";
 import { NavLink, useNavigate } from "react-router-dom";
+import SuccessBuyModal from "./modals/SuccessBuyModal";
 
-function CartPage({ cart, loading, actions }) {
+function CartPage({ cart, user, actions }) {
 	const navigate = useNavigate();
+
+	const [successBuyModalShow, setSuccessBuyModalShow] = useState(false);
+	const [check, setCheck] = useState(null);
 
 	if (!cart)
 		return (
@@ -29,22 +33,22 @@ function CartPage({ cart, loading, actions }) {
 					<label className="ml-auto fs-2">{cart.length} Items</label>
 				</div>
 				<div className="d-flex mt-5 flex-column cart">
-					<div class="cart-item fs-5">
-						<div class="product-details">PRODUCT DETAILS</div>
-						<div class="quantity-control">QUANTITY</div>
-						<div class="price">PRICE</div>
-						<div class="total">TOTAL</div>
+					<div className="cart-item fs-5">
+						<div className="product-details">PRODUCT DETAILS</div>
+						<div className="quantity-control">QUANTITY</div>
+						<div className="price">PRICE</div>
+						<div className="total">TOTAL</div>
 					</div>
 					{cart.map((item) => {
 						return (
-							<div class="cart-item fs-3">
-								<div class="product-details">
+							<div key={item.id} className="cart-item fs-3">
+								<div className="product-details">
 									<img
 										src={item.image}
 										alt="Fifa 19"
-										class="product-image"
+										className="product-image"
 									/>
-									<div class="product-info">
+									<div className="product-info">
 										<label
 											className="fs-3 cursor-pointer"
 											onClick={() =>
@@ -57,20 +61,20 @@ function CartPage({ cart, loading, actions }) {
 										</label>
 									</div>
 								</div>
-								<div class="quantity-control">
+								<div className="quantity-control">
 									<button
-										class="quantity-btn"
+										className="quantity-btn"
 										onClick={() =>
 											actions.decreaseQuantity(item.id, 1)
 										}
 									>
 										-
 									</button>
-									<span class="quantity">
+									<span className="quantity">
 										{item.quantity}
 									</span>
 									<button
-										class="quantity-btn"
+										className="quantity-btn"
 										onClick={() =>
 											actions.increaseQuantity(item.id, 1)
 										}
@@ -78,8 +82,8 @@ function CartPage({ cart, loading, actions }) {
 										+
 									</button>
 								</div>
-								<div class="price">{item.price}</div>
-								<div class="total">
+								<div className="price">{item.price}</div>
+								<div className="total">
 									{item.price * item.quantity}
 								</div>
 							</div>
@@ -98,22 +102,56 @@ function CartPage({ cart, loading, actions }) {
 						}, 0)}
 					</label>
 				</div>
-				<Button className="mt-5" variant="primary" size="lg">
+				<Button
+					className="mt-5"
+					variant="primary"
+					size="lg"
+					disabled={cart.length === 0}
+					onClick={() =>
+						actions
+							.buy(
+								user.id,
+								cart.map((item) => {
+									return {
+										id: item.id,
+										quantity: item.quantity
+									};
+								})
+							)
+							.then((result) => {
+								console.log(result);
+								setCheck(result.check);
+								setSuccessBuyModalShow(true);
+							})
+					}
+				>
 					CHECOUT
 				</Button>
 			</div>
+
+			<SuccessBuyModal
+				show={successBuyModalShow}
+				check={check}
+				onHide={() => {
+					setCheck(undefined);
+					setSuccessBuyModalShow(false);
+					navigate("/");
+				}}
+			/>
 		</div>
 	);
 }
 
 CartPage.propTypes = {
 	cart: PropTypes.array.isRequired,
+	user: PropTypes.object.isRequired,
 	actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
 	return {
 		cart: state.cart,
+		user: state.user,
 		loading: state.apiCallsInProgress > 0
 	};
 }
@@ -132,7 +170,8 @@ function mapDispatchToProps(dispatch) {
 			decreaseQuantity: bindActionCreators(
 				cartActions.decreaseQuantity,
 				dispatch
-			)
+			),
+			buy: bindActionCreators(cartActions.buyCart, dispatch)
 		}
 	};
 }

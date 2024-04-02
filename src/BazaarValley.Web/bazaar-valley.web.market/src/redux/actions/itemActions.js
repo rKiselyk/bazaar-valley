@@ -6,6 +6,10 @@ export function loadItemsSuccess(items) {
 	return { type: types.LOAD_ITEMS_SUCCESS, items };
 }
 
+export function sortItems(propertyName) {
+	return { type: types.SORT_ITEMS, propertyName };
+}
+
 export function loadItems(categoryId, fieldValues, maxPrice) {
 	return function (dispatch) {
 		dispatch(beginApiCall());

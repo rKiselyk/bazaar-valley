@@ -11,6 +11,7 @@ import Tab from "react-bootstrap/Tab";
 import Button from "react-bootstrap/Button";
 
 import UserPersonalInfo from "./tabs/userPersonalInfo";
+import UserOrderHistory from "./tabs/UserOrderHistory";
 
 function UserDetailsPage({ user }) {
 	if (!user)
@@ -43,7 +44,9 @@ function UserDetailsPage({ user }) {
 							</Nav.Link>
 						</Nav.Item>
 						<Nav.Item>
-							<Nav.Link eventKey="second">Tab 2</Nav.Link>
+							<Nav.Link eventKey="order-history">
+								Order History
+							</Nav.Link>
 						</Nav.Item>
 					</Nav>
 					<div className="d-flex flex-column mt-auto">
@@ -63,8 +66,8 @@ function UserDetailsPage({ user }) {
 						<Tab.Pane eventKey="personal-info">
 							<UserPersonalInfo user={user} />
 						</Tab.Pane>
-						<Tab.Pane eventKey="second">
-							Second tab content
+						<Tab.Pane eventKey="order-history">
+							<UserOrderHistory />
 						</Tab.Pane>
 					</Tab.Content>
 				</Col>

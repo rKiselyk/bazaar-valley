@@ -1,6 +1,7 @@
 ﻿using BazaarValley.Domain;
 using BazaarValley.Domain.Categories;
 using BazaarValley.Domain.Items;
+using BazaarValley.Domain.Orders;
 using BazaarValley.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,7 @@ public class ApplicationContext : DbContext
     public DbSet<ItemImageModel> ItemsImages { get; set; }
 
     public DbSet<OrderModel> Orders { get; set; }
+    public DbSet<OrderItemModel> OrderItems { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -74,5 +76,10 @@ public class ApplicationContext : DbContext
             .HasMany(u => u.Shops)
             .WithOne(s => s.User)
             .HasForeignKey(s => s.OwnerId);
+
+        modelBuilder.Entity<OrderModel>()
+            .HasMany(order => order.Items)
+            .WithOne(item => item.Order)
+            .HasForeignKey(item => item.OrderId);
     }
 }

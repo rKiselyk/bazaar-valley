@@ -16,6 +16,9 @@ export default function comparisonListReducer(
 		case types.REMOVE_FROM_COMPARISON_LIST: {
 			return state.filter((item) => item.id !== action.item.id);
 		}
+		case types.USER_LOGOUT_SUCCESS: {
+			return [];
+		}
 		default:
 			return state;
 	}

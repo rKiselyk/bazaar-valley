@@ -153,7 +153,6 @@ function ItemDetailsPage({ categories, loading, actions }) {
 
 ItemDetailsPage.propTypes = {
 	categories: PropTypes.array.isRequired,
-	items: PropTypes.array.isRequired,
 	loading: PropTypes.bool.isRequired,
 	actions: PropTypes.object.isRequired
 };

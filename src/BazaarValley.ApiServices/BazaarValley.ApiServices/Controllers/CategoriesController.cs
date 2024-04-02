@@ -31,10 +31,10 @@ public class CategoriesController : Controller
         return categories;
     }
 
-    [HttpGet("{categoryId}/fields/values")]
-    public async Task<IEnumerable<CategoryFieldValueDto>> GetFieldsValue(int categoryId)
+    [HttpGet("{categoryId}/available-filters")]
+    public async Task<CategoryAvailableFiltersDto> GetAvailableFilters(int categoryId)
     {
-        var fieldsValues = await _categoryFieldsService.GetFieldsValuesAsync(categoryId);
+        var fieldsValues = await _categoryFieldsService.GetAvailableFiltersAsync(categoryId);
 
         return fieldsValues;
     }

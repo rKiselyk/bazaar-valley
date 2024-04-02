@@ -29,7 +29,7 @@ public class CategoryFieldsService : ICategoryFieldsService
         return _mapper.Map<IEnumerable<CategoryFieldDto>>(fieldsForCategory);
     }
 
-    public async Task<IEnumerable<CategoryFieldValueDto>> GetFieldsValuesAsync(int categoryId)
+    public async Task<CategoryAvailableFiltersDto> GetAvailableFiltersAsync(int categoryId)
     {
         var existingCategoryFields = await _applicationContext.CategoryFields.Where(categoryFields => categoryFields.CategoryId == categoryId).ToListAsync();
 
@@ -45,6 +45,10 @@ public class CategoryFieldsService : ICategoryFieldsService
             });
         }
 
-        return fieldsValues;
+        return new CategoryAvailableFiltersDto
+        {
+            MaxPrice = _applicationContext.Items.Select(item => item.Price).Max(),
+            FieldValues = fieldsValues
+        };
     }
 }
