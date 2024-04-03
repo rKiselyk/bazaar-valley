@@ -1,6 +1,7 @@
 using AutoMapper;
 using BazaarValley.Dal;
 using BazaarValley.Services.Cart;
+using BazaarValley.Services.Cart.Mapping;
 using BazaarValley.Services.Categories;
 using BazaarValley.Services.Categories.Mapping;
 using BazaarValley.Services.Items;
@@ -26,11 +27,15 @@ builder.Services.ComposeCartServices();
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new UserMappingProfile());
+
     mc.AddProfile(new CategoryMappingProfile());
     mc.AddProfile(new CategoryFieldsMappingProfile());
+
     mc.AddProfile(new ItemMappingProfiler());
     mc.AddProfile(new ItemImageMappingProfiler());
     mc.AddProfile(new ItemFieldMappingProfiler());
+
+    mc.AddProfile(new OrderMappingProfile());
 });
 
 IMapper mapper = mapperConfig.CreateMapper();

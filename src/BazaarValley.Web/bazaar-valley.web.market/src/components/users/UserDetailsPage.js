@@ -67,7 +67,7 @@ function UserDetailsPage({ user }) {
 							<UserPersonalInfo user={user} />
 						</Tab.Pane>
 						<Tab.Pane eventKey="order-history">
-							<UserOrderHistory />
+							<UserOrderHistory user={user} />
 						</Tab.Pane>
 					</Tab.Content>
 				</Col>

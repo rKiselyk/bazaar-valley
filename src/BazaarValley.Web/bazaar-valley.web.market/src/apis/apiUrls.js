@@ -4,3 +4,4 @@ export const categoriesUrl = baseUrl + "/categories/";
 export const itemsUrl = baseUrl + "/items/";
 export const usersUrl = baseUrl + "/users/";
 export const cartUrl = baseUrl + "/cart/";
+export const orderUrl = baseUrl + "/orders/";
