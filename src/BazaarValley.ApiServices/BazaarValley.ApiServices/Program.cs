@@ -20,13 +20,11 @@ builder.Services.ComposeCartServices();
 #endregion
 
 #region Compose Custom Mapping
-// builder.Services.ComposeUserMapping();
-// builder.Services.ComposeCategoryMapping();
-// builder.Services.ComposeItemMapping();
-
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new UserMappingProfile());
+
+    mc.AddProfile(new WishlistMappingProfile());
 
     mc.AddProfile(new CategoryMappingProfile());
     mc.AddProfile(new CategoryFieldsMappingProfile());

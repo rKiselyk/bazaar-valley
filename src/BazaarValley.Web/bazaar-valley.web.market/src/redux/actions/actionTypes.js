@@ -18,9 +18,15 @@ export const USER_LOGOUT_SUCCESS = "USER_LOGOUT_SUCCESS";
 export const USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS";
 //#endregion
 
-//#region Comparison List\
+//#region Comparison List
 export const ADD_TO_COMPARISON_LIST = "ADD_TO_COMPARISON_LIST";
 export const REMOVE_FROM_COMPARISON_LIST = "REMOVE_FROM_COMPARISON_LIST";
+//#endregion
+
+//#region Wishlist Actions
+export const LOAD_WISHLIST_SUCCESS = "LOAD_WISHLIST_SUCCESS";
+export const ADD_TO_WISHLIST_SUCCESS = "ADD_TO_WISHLIST_SUCCESS";
+export const REMOVE_FROM_WISHLIST_SUCCESS = "REMOVE_FROM_WISHLIST_SUCCESS";
 //#endregion
 
 //#region Api Call Actions

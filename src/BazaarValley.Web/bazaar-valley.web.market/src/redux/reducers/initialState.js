@@ -4,6 +4,7 @@ const initialState = {
 	cart: [],
 	fieldsValues: [],
 	comparisonList: [],
+	wishlist: [],
 	user: null,
 	apiCallsInProgress: 0
 };

@@ -5,6 +5,7 @@ import apiCallsInProgress from "./apiStatusReducer";
 import cart from "./cartReducer";
 import user from "./userReducer";
 import comparisonList from "./comparisonListReducer";
+import wishlist from "./wishlistReducer";
 
 const rootReducer = combineReducers({
 	categories,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
 	cart,
 	user,
 	comparisonList,
+	wishlist,
 	apiCallsInProgress
 });
 

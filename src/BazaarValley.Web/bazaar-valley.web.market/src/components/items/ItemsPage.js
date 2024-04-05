@@ -6,22 +6,29 @@ import { bindActionCreators } from "redux";
 import * as categoryActions from "../../redux/actions/categoryActions";
 import * as itemActions from "../../redux/actions/itemActions";
 import Loader from "../common/Loader";
-import FieldFilter from "./FieldFilter";
+import FieldFilter from "./field-filter/FieldFilter";
 import GridViewItems from "./item-list/GridViewItems";
 import useFetch from "../../hooks/useFetch";
 import { NavLink } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 import RangeInput from "../common/RangeInput";
 
 import "./ItemsPage.css";
 import TableRowItems from "./item-list/TableRowItems";
+import ItemsOrder from "./items-order/ItemsOrder";
+import AppPagination from "../common/Pagination";
 
-function ItemsPage({ categories, items, loading, actions }) {
+function ItemsPage({
+	categories,
+	items,
+	wishlist,
+	comparisonList,
+	cart,
+	actions
+}) {
 	const { categoryId } = useParams();
 
 	const [category, setCategory] = useState({});
@@ -29,6 +36,9 @@ function ItemsPage({ categories, items, loading, actions }) {
 	const [maxPrice, setMaxPrice] = useState(undefined);
 	const [orderProperty, setOrderProperty] = useState(undefined);
 	const [isGridView, setIsGridView] = useState(true);
+
+	const [currentPage, setCurrentPage] = useState(1); // set the current page
+	const pageSize = 20; // show row in table
 
 	const {
 		data: availibleFilters,
@@ -43,7 +53,7 @@ function ItemsPage({ categories, items, loading, actions }) {
 			});
 		}
 
-		actions.loadItems(categoryId, []).catch((error) => {
+		actions.loadItems(categoryId, [], null, pageSize, 0).catch((error) => {
 			alert("Loading courses failed" + error);
 		});
 
@@ -56,11 +66,17 @@ function ItemsPage({ categories, items, loading, actions }) {
 
 	useEffect(() => {
 		actions
-			.loadItems(categoryId, selectedFieldValues, maxPrice)
+			.loadItems(
+				categoryId,
+				selectedFieldValues,
+				maxPrice,
+				pageSize,
+				currentPage - 1
+			)
 			.catch((error) => {
 				alert("Loading courses failed" + error);
 			});
-	}, [categoryId, selectedFieldValues, maxPrice]);
+	}, [categoryId, selectedFieldValues, maxPrice, currentPage]);
 
 	if (error) {
 		alert(error);
@@ -119,7 +135,6 @@ function ItemsPage({ categories, items, loading, actions }) {
 						<label className="fs-2 text-uppercase">
 							{category.name}
 						</label>
-						<label className="ml-2 fs-3">({items.length})</label>
 						<div className="ml-5 w-100 f-flex align-items-center">
 							{maxPrice && (
 								<div className="ml-2 p-2 bg-white d-inline-block">
@@ -139,97 +154,41 @@ function ItemsPage({ categories, items, loading, actions }) {
 						</div>
 					</div>
 
-					<div className="bg-white with-border d-flex w-100">
-						<ButtonGroup
-							size="lg"
-							className="w-100"
-							onClick={() => setOrderProperty("")}
-						>
-							<Button variant="light" className="bg-white">
-								<label>POPULAR FIRST</label>
-							</Button>
-							<Button
-								variant="light"
-								className="bg-white"
-								onClick={() => setOrderProperty("")}
-							>
-								<label>NEWEST FIRST</label>
-							</Button>
-							<Button
-								variant="light"
-								className={
-									"bg-white" +
-									(orderProperty === "price"
-										? "active-sort-button"
-										: "")
-								}
-								onClick={() => {
-									setOrderProperty("price");
-									actions.sortItems(orderProperty);
-								}}
-							>
-								<label>CHIPEST FIRST</label>
-							</Button>
-							<Button
-								variant="light"
-								className={
-									"bg-white" +
-									(orderProperty === "discount"
-										? "active-sort-button"
-										: "")
-								}
-								onClick={() => {
-									setOrderProperty("discount");
-									actions.sortItems(orderProperty);
-								}}
-							>
-								<label>DISCOUNTS FIRST</label>
-							</Button>
-							<div className="d-flex ml-auto mx-2">
-								<Button
-									variant="light"
-									className={
-										"bg-white" +
-										(isGridView ? "active-sort-button" : "")
-									}
-									onClick={() => {
-										setIsGridView(true);
-									}}
-								>
-									<img
-										style={{ height: 50 }}
-										className="mx-2"
-										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAABaElEQVR4nO3bMW6EMBAF0Dlets79m2yRKmeYNEkRWTJiTcBj3pPoRh8YWwJ2tBEAAAAAAAAAwF7vEfEVEbnzeEbEQ36M9qfx+cJi/B4f8mO0P40cPOTHUH8sSMy1oTZPqP7c/gwHqO+zIFF7Q01/gXmz+s0Ab1mTPdQtyMUL8vznDx/5Oz1+GvvKYrzJj9H+AMBhzEOu7U/DPOTa/jR8GPb5Uo+x346q/dKweUL15/ZnOEB9nwWJ2htq+gvMm9Uv91DM4vnL3VAWz2+YV1zbn4Z5yLX9AYDDmIf0mYfEvtfG6vOc5T6ssnj+cjeUxfM3T6j+3P4MB6jvsyBRe0NNf4F5s/rlHopZPH+5G8ri+Q3zkD7zkLjX/08A4DDmIX3mIfH3TWWLechkH1ZZPH+5G8ri+ZsnVH9uf4YD1PdZkKi9oaa/wLxZ/XIPxSyev9wNZfH8hnlIn3lIzDWvMA8BAAAAAAAAgDjPN8RKvDh3G1mbAAAAAElFTkSuQmCC"
-									/>
-								</Button>
-								<Button
-									variant="light"
-									className={
-										"bg-white" +
-										(!isGridView
-											? "active-sort-button"
-											: "")
-									}
-									onClick={() => {
-										setIsGridView(false);
-									}}
-								>
-									<img
-										style={{ height: 50 }}
-										className="mx-2"
-										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAABOElEQVR4nO3bMU7DQBQE0DkSxyA1h0JckoIgUVEiSkeRoHZMZHvwvif9apu1R3Ycj5wAAAAAAHBMT0k+k0wzc05y2nuzI/i4IYzfedt7syOYFg4rE0iZuStgbv0lyfcfgp0Gm9dbf4PvCeSh4ECnfzTvAslYgVw9J/kqONjpqLesuWFlAilzXhCKP4YbOP2c6FvCeNxiQwAAAGxLp15Gp17Gy8UyAilzb0GlU8+6BdWSdZ16Ft1hdOoZLJArnXp06ofmKauMTr2MTh0AAGBwOvUyOvUyXi6WEUgZnXo2aQt16tm/stWpZ/+TrlPPwW9Zc8PKBFJGp15Gpw4AADA4nXoZnXoZLxfLCKTMXN8xt+479axbUC1Z9516uipcgaQrkCvfqUenfmiessro1Mvo1AEAAAAAIPe4AEoKoPfgrzWHAAAAAElFTkSuQmCC"
-									/>
-								</Button>
-							</div>
-						</ButtonGroup>
+					<div className="bg-white with-border d-flex w-100 mb-2">
+						<ItemsOrder
+							orderProperty={orderProperty}
+							isGridView={isGridView}
+							setIsGridView={setIsGridView}
+							setOrderProperty={setOrderProperty}
+							actions={actions}
+						/>
 					</div>
 
-					<div className="mt-2">
+					<div className="mb-2">
 						{isGridView ? (
-							<GridViewItems items={items} />
+							<GridViewItems
+								items={items}
+								cart={cart}
+								wishlist={wishlist}
+								comparisonList={comparisonList}
+							/>
 						) : (
-							<TableRowItems items={items} />
+							<TableRowItems
+								items={items}
+								cart={cart}
+								wishlist={wishlist}
+								comparisonList={comparisonList}
+							/>
 						)}
+					</div>
+					<div className="d-flex justify-content-center p-3">
+						<AppPagination
+							itemsCount={206}
+							itemsPerPage={pageSize}
+							currentPage={currentPage}
+							setCurrentPage={setCurrentPage}
+							alwaysShown={true}
+						/>
 					</div>
 				</div>
 			</div>
@@ -248,6 +207,9 @@ function mapStateToProps(state) {
 	return {
 		categories: state.categories,
 		items: state.items,
+		wishlist: state.wishlist,
+		comparisonList: state.comparisonList,
+		cart: state.cart,
 		loading: state.apiCallsInProgress > 0
 	};
 }

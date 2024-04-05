@@ -27,7 +27,7 @@ public class ItemService : IItemService
         _imageService = imageService;
     }
 
-    public async Task<IEnumerable<ItemBaseDto>> GetAsync(ItemFilterDto itemFilterDto)
+    public async Task<ItemSearchDto> GetAsync(ItemFilterDto itemFilterDto)
     {
         var random = new Random();
 
@@ -45,14 +45,20 @@ public class ItemService : IItemService
             filteredByFields = existingItems;
         }
 
-        var items = _mapper.Map<IEnumerable<ItemBaseDto>>(filteredByFields);
+        var totalNumber = filteredByFields.Count;
+
+        var items = _mapper.Map<IEnumerable<ItemBaseDto>>(filteredByFields.Skip(itemFilterDto.StartFrom * itemFilterDto.ItemsPerPage).Take(itemFilterDto.ItemsPerPage).ToList());
         foreach (var item in items)
         {
             item.Images = await _imageService.GetPreviewAsync(item.Id);
             item.Discount = Convert.ToBoolean(random.Next(0, 2)) ? random.Next(0, 100) : null;
         }
 
-        return items;
+        return new ItemSearchDto
+        {
+            TotalItemNumber = totalNumber,
+            Items = items
+        };
     }
 
     public async Task<ItemDto> GetInfoAsync(int itemId)

@@ -24,6 +24,8 @@ public class ApplicationContext : DbContext
     public DbSet<OrderModel> Orders { get; set; }
     public DbSet<OrderItemModel> OrderItems { get; set; }
 
+    public DbSet<WishlistItemModel> Wishlist { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=BazaarValley;Integrated Security=True;MultipleActiveResultSets=true;TrustServerCertificate=True");

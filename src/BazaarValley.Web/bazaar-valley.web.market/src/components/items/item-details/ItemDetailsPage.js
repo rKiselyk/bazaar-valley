@@ -7,6 +7,7 @@ import { bindActionCreators } from "redux";
 import * as categoryActions from "../../../redux/actions/categoryActions";
 import * as cartActions from "../../../redux/actions/cartActions";
 import * as comparisonListActions from "../../../redux/actions/comparisonListActions";
+import * as wishlistActions from "../../../redux/actions/wishlistActions";
 
 import { NavLink } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
@@ -15,7 +16,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 
-function ItemDetailsPage({ categories, loading, actions }) {
+function ItemDetailsPage({ user, categories, loading, actions }) {
 	const { categoryId, itemId } = useParams();
 	const [category, setCategory] = useState({});
 
@@ -145,6 +146,16 @@ function ItemDetailsPage({ categories, loading, actions }) {
 					>
 						Add To Comparison List
 					</Button>
+					<Button
+						className="mt-2"
+						variant="light"
+						size="lg"
+						onClick={() => {
+							actions.addToWishlist(user.id, itemInfo.id);
+						}}
+					>
+						Add To Wishlist
+					</Button>
 				</div>
 			</div>
 		</div>
@@ -160,6 +171,7 @@ ItemDetailsPage.propTypes = {
 function mapStateToProps(state) {
 	return {
 		categories: state.categories,
+		user: state.user,
 		loading: state.apiCallsInProgress > 0
 	};
 }
@@ -175,7 +187,8 @@ function mapDispatchToProps(dispatch) {
 			addToComparisonList: bindActionCreators(
 				comparisonListActions.addToComparisonList,
 				dispatch
-			)
+			),
+			addToWishlist: bindActionCreators(wishlistActions.addItem, dispatch)
 		}
 	};
 }
