@@ -1,4 +1,5 @@
 ﻿using BazaarValley.Domain.Categories;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BazaarValley.Domain.Items;
 
@@ -16,6 +17,11 @@ public class ItemModel
     public CategoryModel Category { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    [NotMapped]
+    public int Discount { get; set; }
+    [NotMapped]
+    public float Ratings { get; set; }
 
     public List<ItemFieldModel> Fields { get; set; }
     public List<ItemImageModel> Images { get; set; }

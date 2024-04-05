@@ -1,4 +1,6 @@
-﻿namespace BazaarValley.Domain.Users;
+﻿using BazaarValley.Domain.Orders;
+
+namespace BazaarValley.Domain.Users;
 
 public class UserModel
 {

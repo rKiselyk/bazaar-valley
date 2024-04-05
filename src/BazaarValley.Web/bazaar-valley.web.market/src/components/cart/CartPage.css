@@ -1,0 +1,53 @@
+.cart-item {
+	display: grid;
+	grid-template-columns: auto 100px 100px 100px;
+	align-items: center;
+	gap: 16px;
+}
+
+.product-details {
+	display: flex;
+	align-items: center;
+}
+
+.product-image {
+	width: 140px; /* Adjust as necessary */
+	height: auto;
+	margin-right: 16px;
+}
+
+.product-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.quantity-control {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.quantity-btn {
+	background: none;
+	border: none;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.quantity {
+	margin: 0 10px;
+}
+
+.remove-button {
+	background: none;
+	border: none;
+	color: blue;
+	cursor: pointer;
+}
+
+.price,
+.total {
+	text-align: center;
+}
+
+/* Add responsive or additional styling as needed */

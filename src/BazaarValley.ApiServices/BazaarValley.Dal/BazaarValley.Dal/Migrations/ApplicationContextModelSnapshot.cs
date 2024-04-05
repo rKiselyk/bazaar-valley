@@ -37,6 +37,9 @@ namespace BazaarValley.Dal.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -164,7 +167,36 @@ namespace BazaarValley.Dal.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("BazaarValley.Domain.OrderModel", b =>
+            modelBuilder.Entity("BazaarValley.Domain.Orders.OrderItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("BazaarValley.Domain.Orders.OrderModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -175,21 +207,13 @@ namespace BazaarValley.Dal.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
+                    b.Property<double>("TotalPrice")
                         .HasColumnType("float");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
 
                     b.HasIndex("UserId");
 
@@ -279,6 +303,30 @@ namespace BazaarValley.Dal.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("BazaarValley.Domain.Users.WishlistItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("Wishlist");
+                });
+
             modelBuilder.Entity("BazaarValley.Domain.Categories.CategoryFieldModel", b =>
                 {
                     b.HasOne("BazaarValley.Domain.Categories.CategoryModel", "Category")
@@ -339,7 +387,7 @@ namespace BazaarValley.Dal.Migrations
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("BazaarValley.Domain.OrderModel", b =>
+            modelBuilder.Entity("BazaarValley.Domain.Orders.OrderItemModel", b =>
                 {
                     b.HasOne("BazaarValley.Domain.Items.ItemModel", "Item")
                         .WithMany()
@@ -347,13 +395,24 @@ namespace BazaarValley.Dal.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BazaarValley.Domain.Orders.OrderModel", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("BazaarValley.Domain.Orders.OrderModel", b =>
+                {
                     b.HasOne("BazaarValley.Domain.Users.UserModel", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Item");
 
                     b.Navigation("User");
                 });
@@ -380,6 +439,17 @@ namespace BazaarValley.Dal.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("BazaarValley.Domain.Users.WishlistItemModel", b =>
+                {
+                    b.HasOne("BazaarValley.Domain.Items.ItemModel", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("BazaarValley.Domain.Categories.CategoryModel", b =>
                 {
                     b.Navigation("Fields");
@@ -392,6 +462,11 @@ namespace BazaarValley.Dal.Migrations
                     b.Navigation("Fields");
 
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("BazaarValley.Domain.Orders.OrderModel", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("BazaarValley.Domain.ShopModel", b =>

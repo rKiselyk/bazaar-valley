@@ -11,4 +11,5 @@ public interface IUserService
     Task<UserDto> UpdateAsync(UserUpdateDto user);
 
     Task DeleteAsync(int id);
+    Task<UserDto> LoginAsync(UserLoginDto userLogin);
 }

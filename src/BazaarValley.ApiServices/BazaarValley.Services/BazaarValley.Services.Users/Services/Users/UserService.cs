@@ -52,4 +52,10 @@ public class UserService : IUserService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<UserDto> LoginAsync(UserLoginDto userLogin)
+    {
+        var existingUser = await _applicationContext.Users.FirstOrDefaultAsync(user => user.Email == userLogin.Email && user.Password == userLogin.Password);
+        return _mapper.Map<UserDto>(existingUser);
+    }
 }
