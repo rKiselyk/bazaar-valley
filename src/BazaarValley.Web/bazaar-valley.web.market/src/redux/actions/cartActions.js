@@ -6,6 +6,10 @@ export function addToCart(item) {
 	return { type: types.ADD_TO_CART, item };
 }
 
+export function removeFromCart(item) {
+	return { type: types.REMOVE_FROM_CART, item };
+}
+
 export function increaseQuantity(itemId, quantity) {
 	return { type: types.INCREASE_QUANTITY, itemId, quantity };
 }

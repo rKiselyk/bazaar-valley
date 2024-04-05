@@ -1,6 +1,9 @@
 const initialState = {
 	categories: [],
-	items: [],
+	items: {
+		totalItemNumber: 0,
+		items: []
+	},
 	cart: [],
 	fieldsValues: [],
 	comparisonList: [],

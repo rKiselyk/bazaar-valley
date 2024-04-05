@@ -5,6 +5,7 @@ using BazaarValley.Domain.Items;
 using BazaarValley.Services.Items.Services.ItemImages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq.Dynamic.Core;
 
 namespace BazaarValley.Services.Items.Services.Items;
 
@@ -36,7 +37,7 @@ public class ItemService : IItemService
 
         var filteredByFields = new List<ItemModel>();
 
-        if (itemFilterDto.FieldValues.Any())
+        if (itemFilterDto.FieldValues?.Any() ?? false)
         {
             filteredByFields.AddRange(existingItems.Where(existingItem => existingItem.Fields.Any(field => itemFilterDto.FieldValues.Any(filteredField => filteredField.Id == field.CategoryFieldId && field.Value.Equals(filteredField.Value)))));
         }
@@ -47,11 +48,22 @@ public class ItemService : IItemService
 
         var totalNumber = filteredByFields.Count;
 
+        foreach (var item in filteredByFields)
+        {
+            // TODO refactor from shop page
+            item.Discount = Convert.ToBoolean(random.Next(0, 2)) ? random.Next(0, 100) : 0;
+            item.Ratings = Convert.ToBoolean(random.Next(0, 2)) ? ((float)random.Next(0, 5) + random.NextSingle()) : (float)0.0;
+        }
+
+        if (!string.IsNullOrWhiteSpace(itemFilterDto.Sorting?.Property))
+        {
+            filteredByFields = filteredByFields.AsQueryable().OrderBy($"{itemFilterDto.Sorting?.Property} {(itemFilterDto.Sorting.isAsc ? "ASC" : "DESC")}").ToList();
+        }
+
         var items = _mapper.Map<IEnumerable<ItemBaseDto>>(filteredByFields.Skip(itemFilterDto.StartFrom * itemFilterDto.ItemsPerPage).Take(itemFilterDto.ItemsPerPage).ToList());
         foreach (var item in items)
         {
             item.Images = await _imageService.GetPreviewAsync(item.Id);
-            item.Discount = Convert.ToBoolean(random.Next(0, 2)) ? random.Next(0, 100) : null;
         }
 
         return new ItemSearchDto

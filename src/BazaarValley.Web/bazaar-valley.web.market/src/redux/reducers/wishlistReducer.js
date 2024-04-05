@@ -7,7 +7,7 @@ export default function wishlistReducer(state = initialState.wishlist, action) {
 			return [...state, action.item];
 		}
 		case types.REMOVE_FROM_WISHLIST_SUCCESS: {
-			return state.filter((item) => item.id !== action.itemId);
+			return state.filter((item) => item.itemId !== action.itemId);
 		}
 		case types.LOAD_WISHLIST_SUCCESS: {
 			return action.wishlist;

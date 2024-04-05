@@ -15,8 +15,21 @@ import Loader from "../../common/Loader";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
+import {
+	isInCart,
+	isInComparisonList,
+	isInWishlist
+} from "../commonItemFunctions";
 
-function ItemDetailsPage({ user, categories, loading, actions }) {
+function ItemDetailsPage({
+	user,
+	categories,
+	cart,
+	wishlist,
+	comparisonList,
+	loading,
+	actions
+}) {
 	const { categoryId, itemId } = useParams();
 	const [category, setCategory] = useState({});
 
@@ -113,49 +126,96 @@ function ItemDetailsPage({ user, categories, loading, actions }) {
 						</Table>
 					</div>
 
-					<Button
-						variant="primary"
-						size="lg"
-						onClick={() =>
-							actions.addToCart({
-								id: itemInfo.id,
-								categoryId: parseInt(categoryId),
-								image: itemInfo.images[0].blob,
-								title: itemInfo.title,
-								quantity: 1,
-								price: itemInfo.price
-							})
-						}
-					>
-						Add To Cart
-					</Button>
-					<Button
-						className="mt-2"
-						variant="light"
-						size="lg"
-						onClick={() =>
-							actions.addToComparisonList({
-								id: itemInfo.id,
-								categoryId: parseInt(categoryId),
-								image: itemInfo.images[0].blob,
-								title: itemInfo.title,
-								price: itemInfo.price,
-								fields: itemInfo.fields
-							})
-						}
-					>
-						Add To Comparison List
-					</Button>
-					<Button
-						className="mt-2"
-						variant="light"
-						size="lg"
-						onClick={() => {
-							actions.addToWishlist(user.id, itemInfo.id);
-						}}
-					>
-						Add To Wishlist
-					</Button>
+					{isInCart(cart, itemInfo.id) ? (
+						<Button
+							variant="success"
+							size="lg"
+							onClick={() =>
+								actions.removeFromCart({
+									id: itemInfo.id,
+									categoryId: parseInt(categoryId)
+								})
+							}
+						>
+							Remove from Cart
+						</Button>
+					) : (
+						<Button
+							variant="primary"
+							size="lg"
+							onClick={() =>
+								actions.addToCart({
+									id: itemInfo.id,
+									categoryId: parseInt(categoryId),
+									image: itemInfo.images[0].blob,
+									title: itemInfo.title,
+									quantity: 1,
+									price: itemInfo.price
+								})
+							}
+						>
+							Add To Cart
+						</Button>
+					)}
+					{isInComparisonList(comparisonList, itemInfo.id) ? (
+						<Button
+							className="mt-2"
+							variant="secondary"
+							size="lg"
+							onClick={() =>
+								actions.removeFromComparisonList({
+									id: itemInfo.id,
+									categoryId: parseInt(categoryId)
+								})
+							}
+						>
+							Remove From Comparison List
+						</Button>
+					) : (
+						<Button
+							className="mt-2"
+							variant="light"
+							size="lg"
+							onClick={() =>
+								actions.addToComparisonList({
+									id: itemInfo.id,
+									categoryId: parseInt(categoryId),
+									image: itemInfo.images[0].blob,
+									title: itemInfo.title,
+									price: itemInfo.price,
+									fields: itemInfo.fields
+								})
+							}
+						>
+							Add To Comparison List
+						</Button>
+					)}
+					{isInWishlist(wishlist, itemInfo.id) ? (
+						<Button
+							className="mt-2"
+							variant="secondary"
+							size="lg"
+							onClick={() => {
+								actions.removeFromWishlist(
+									user.id,
+									itemInfo.id
+								);
+							}}
+						>
+							Remove From Wishlist
+						</Button>
+					) : (
+						<Button
+							className="mt-2"
+							variant="light"
+							size="lg"
+							onClick={() => {
+								actions.addToWishlist(user.id, itemInfo.id);
+							}}
+						>
+							Add To Wishlist
+						</Button>
+					)}
 				</div>
 			</div>
 		</div>
@@ -172,6 +232,9 @@ function mapStateToProps(state) {
 	return {
 		categories: state.categories,
 		user: state.user,
+		cart: state.cart,
+		wishlist: state.wishlist,
+		comparisonList: state.comparisonList,
 		loading: state.apiCallsInProgress > 0
 	};
 }
@@ -184,11 +247,26 @@ function mapDispatchToProps(dispatch) {
 				dispatch
 			),
 			addToCart: bindActionCreators(cartActions.addToCart, dispatch),
+			removeFromCart: bindActionCreators(
+				cartActions.removeFromCart,
+				dispatch
+			),
 			addToComparisonList: bindActionCreators(
 				comparisonListActions.addToComparisonList,
 				dispatch
 			),
-			addToWishlist: bindActionCreators(wishlistActions.addItem, dispatch)
+			removeFromComparisonList: bindActionCreators(
+				comparisonListActions.removeFromComparisonList,
+				dispatch
+			),
+			addToWishlist: bindActionCreators(
+				wishlistActions.addItem,
+				dispatch
+			),
+			removeFromWishlist: bindActionCreators(
+				wishlistActions.deleteItem,
+				dispatch
+			)
 		}
 	};
 }

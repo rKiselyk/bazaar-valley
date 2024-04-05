@@ -56,7 +56,7 @@ public class WishlistService : IWishlistService
 
     public async Task DeleteAsync(int userId, int itemId)
     {
-        var existingItem = await _applicationContext.Wishlist.FirstOrDefaultAsync(item => item.Id == itemId && item.UserId == userId);
+        var existingItem = await _applicationContext.Wishlist.FirstOrDefaultAsync(item => item.ItemId == itemId && item.UserId == userId);
         if (existingItem == null)
             return;
 

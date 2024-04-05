@@ -6,16 +6,13 @@ export function loadItemsSuccess(items) {
 	return { type: types.LOAD_ITEMS_SUCCESS, items };
 }
 
-export function sortItems(propertyName) {
-	return { type: types.SORT_ITEMS, propertyName };
-}
-
 export function loadItems(
 	categoryId,
 	fieldValues,
 	maxPrice,
 	itemsPerPage,
-	startFrom = 0
+	startFrom = 0,
+	sorting = null
 ) {
 	return function (dispatch) {
 		dispatch(beginApiCall());
@@ -26,11 +23,10 @@ export function loadItems(
 				fieldValues,
 				maxPrice,
 				itemsPerPage,
-				startFrom
+				startFrom,
+				sorting
 			)
-			.then((searchResult) =>
-				dispatch(loadItemsSuccess(searchResult.items))
-			)
+			.then((searchResult) => dispatch(loadItemsSuccess(searchResult)))
 			.catch((error) => {
 				dispatch(apiCallError);
 				throw error;

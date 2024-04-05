@@ -6,7 +6,8 @@ export function getItems(
 	fieldValues,
 	maxPrice,
 	itemsPerPage,
-	startFrom = 0
+	startFrom = 0,
+	sorting = null
 ) {
 	return fetch(itemsUrl, {
 		method: "POST",
@@ -16,7 +17,8 @@ export function getItems(
 			fieldValues,
 			maxPrice,
 			itemsPerPage,
-			startFrom
+			startFrom,
+			sorting
 		})
 	})
 		.then(handleResponse)

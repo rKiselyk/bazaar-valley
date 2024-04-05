@@ -47,7 +47,7 @@ export function deleteItem(userId, itemId) {
 		dispatch(beginApiCall());
 
 		return wishlistApi
-			.addItem(userId, itemId)
+			.deleteItem(userId, itemId)
 			.then(() => dispatch(deleteItemSuccess(itemId)))
 			.catch((error) => {
 				dispatch(apiCallError);

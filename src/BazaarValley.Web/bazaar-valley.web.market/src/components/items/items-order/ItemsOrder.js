@@ -4,37 +4,49 @@ import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 
 function ItemsOrder({
-	orderProperty,
+	sorting,
+	setSorting,
 	isGridView,
 	setIsGridView,
 	setOrderProperty,
 	actions
 }) {
 	return (
-		<ButtonGroup
-			size="lg"
-			className="w-100"
-			onClick={() => setOrderProperty("")}
-		>
-			<Button variant="light" className="bg-white">
+		<ButtonGroup size="lg" className="w-100">
+			<Button
+				variant="light"
+				className={
+					"bg-white " +
+					(sorting.property === "Ratings" ? "active-sort-button" : "")
+				}
+				onClick={() =>
+					setSorting({ property: "Ratings", isAsc: false })
+				}
+			>
 				<label>POPULAR FIRST</label>
 			</Button>
 			<Button
 				variant="light"
-				className="bg-white"
-				onClick={() => setOrderProperty("")}
+				className={
+					"bg-white " +
+					(sorting.property === "CreatedAt"
+						? "active-sort-button"
+						: "")
+				}
+				onClick={() =>
+					setSorting({ property: "CreatedAt", isAsc: true })
+				}
 			>
 				<label>NEWEST FIRST</label>
 			</Button>
 			<Button
 				variant="light"
 				className={
-					"bg-white" +
-					(orderProperty === "price" ? "active-sort-button" : "")
+					"bg-white " +
+					(sorting.property === "Price" ? "active-sort-button" : "")
 				}
 				onClick={() => {
-					setOrderProperty("price");
-					actions.sortItems(orderProperty);
+					setSorting({ property: "Price", isAsc: true });
 				}}
 			>
 				<label>CHIPEST FIRST</label>
@@ -42,12 +54,13 @@ function ItemsOrder({
 			<Button
 				variant="light"
 				className={
-					"bg-white" +
-					(orderProperty === "discount" ? "active-sort-button" : "")
+					"bg-white " +
+					(sorting.property === "Discount"
+						? "active-sort-button"
+						: "")
 				}
 				onClick={() => {
-					setOrderProperty("discount");
-					actions.sortItems(orderProperty);
+					setSorting({ property: "Discount", isAsc: false });
 				}}
 			>
 				<label>DISCOUNTS FIRST</label>
@@ -56,7 +69,7 @@ function ItemsOrder({
 				<Button
 					variant="light"
 					className={
-						"bg-white" + (isGridView ? "active-sort-button" : "")
+						"bg-white " + (isGridView ? "active-sort-button" : "")
 					}
 					onClick={() => {
 						setIsGridView(true);
@@ -71,7 +84,7 @@ function ItemsOrder({
 				<Button
 					variant="light"
 					className={
-						"bg-white" + (!isGridView ? "active-sort-button" : "")
+						"bg-white " + (!isGridView ? "active-sort-button" : "")
 					}
 					onClick={() => {
 						setIsGridView(false);

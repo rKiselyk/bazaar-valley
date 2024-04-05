@@ -16,8 +16,10 @@ export function addItem(userId, itemId) {
 }
 
 export function deleteItem(userId, itemId) {
-	return fetch(wishlistUrl(userId) + itemId, {
-		method: "DELETE"
+	return fetch(wishlistUrl(userId) + `/${itemId}`, {
+		method: "DELETE",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify({ itemId })
 	})
 		.then(handleResponse)
 		.catch(handleError);

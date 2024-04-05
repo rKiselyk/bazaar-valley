@@ -18,6 +18,9 @@ export default function cartReducer(state = initialState.cart, action) {
 			}
 			return [...state, action.item];
 		}
+		case types.REMOVE_FROM_CART: {
+			return state.filter((cartItem) => cartItem.id !== action.item.id);
+		}
 		case types.INCREASE_QUANTITY: {
 			const itemInCart = state.find((item) => item.id === action.itemId);
 			return state.map((item) =>

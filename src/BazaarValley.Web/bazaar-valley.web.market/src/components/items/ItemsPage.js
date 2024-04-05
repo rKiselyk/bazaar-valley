@@ -34,11 +34,15 @@ function ItemsPage({
 	const [category, setCategory] = useState({});
 	const [selectedFieldValues, setSelectedFieldValues] = useState([]);
 	const [maxPrice, setMaxPrice] = useState(undefined);
-	const [orderProperty, setOrderProperty] = useState(undefined);
 	const [isGridView, setIsGridView] = useState(true);
 
-	const [currentPage, setCurrentPage] = useState(1); // set the current page
-	const pageSize = 20; // show row in table
+	const [sorting, setSorting] = useState({
+		property: "CreatedAt",
+		isAsc: true
+	});
+
+	const [currentPage, setCurrentPage] = useState(1);
+	const pageSize = 20;
 
 	const {
 		data: availibleFilters,
@@ -71,12 +75,13 @@ function ItemsPage({
 				selectedFieldValues,
 				maxPrice,
 				pageSize,
-				currentPage - 1
+				currentPage - 1,
+				sorting
 			)
 			.catch((error) => {
 				alert("Loading courses failed" + error);
 			});
-	}, [categoryId, selectedFieldValues, maxPrice, currentPage]);
+	}, [categoryId, selectedFieldValues, maxPrice, currentPage, sorting]);
 
 	if (error) {
 		alert(error);
@@ -135,6 +140,9 @@ function ItemsPage({
 						<label className="fs-2 text-uppercase">
 							{category.name}
 						</label>
+						<label className="fs-2 ml-2 text-uppercase">
+							({items.totalItemNumber})
+						</label>
 						<div className="ml-5 w-100 f-flex align-items-center">
 							{maxPrice && (
 								<div className="ml-2 p-2 bg-white d-inline-block">
@@ -156,10 +164,10 @@ function ItemsPage({
 
 					<div className="bg-white with-border d-flex w-100 mb-2">
 						<ItemsOrder
-							orderProperty={orderProperty}
+							sorting={sorting}
+							setSorting={setSorting}
 							isGridView={isGridView}
 							setIsGridView={setIsGridView}
-							setOrderProperty={setOrderProperty}
 							actions={actions}
 						/>
 					</div>
@@ -167,14 +175,14 @@ function ItemsPage({
 					<div className="mb-2">
 						{isGridView ? (
 							<GridViewItems
-								items={items}
+								items={items.items}
 								cart={cart}
 								wishlist={wishlist}
 								comparisonList={comparisonList}
 							/>
 						) : (
 							<TableRowItems
-								items={items}
+								items={items.items}
 								cart={cart}
 								wishlist={wishlist}
 								comparisonList={comparisonList}
@@ -183,11 +191,11 @@ function ItemsPage({
 					</div>
 					<div className="d-flex justify-content-center p-3">
 						<AppPagination
-							itemsCount={206}
+							itemsCount={items.totalItemNumber}
 							itemsPerPage={pageSize}
 							currentPage={currentPage}
 							setCurrentPage={setCurrentPage}
-							alwaysShown={true}
+							alwaysShown={false}
 						/>
 					</div>
 				</div>
@@ -222,7 +230,6 @@ function mapDispatchToProps(dispatch) {
 				dispatch
 			),
 			loadItems: bindActionCreators(itemActions.loadItems, dispatch),
-			sortItems: bindActionCreators(itemActions.sortItems, dispatch),
 			loadCategoryFieldsValues: bindActionCreators(
 				categoryActions.loadCategoryFieldsValues,
 				dispatch

@@ -5,8 +5,20 @@ import PropTypes from "prop-types";
 
 import { bindActionCreators } from "redux";
 import * as wishlistActions from "../../redux/actions/wishlistActions";
+import { useNavigate } from "react-router-dom";
+
+function formatDate(date) {
+	return new Date(date).toLocaleDateString("en-US", {
+		weekday: "long",
+		year: "numeric",
+		month: "long",
+		day: "numeric"
+	});
+}
 
 function WishlistPage({ user, wishlist, categories, actions }) {
+	const navigate = useNavigate();
+
 	const [wishlistCategoryItems, setWishlistCategoryItems] = useState([]);
 	const [wishlistCategories, setWishlistCategories] = useState([]);
 	const [selectedCategory, setselectedCategory] = useState({});
@@ -67,8 +79,19 @@ function WishlistPage({ user, wishlist, categories, actions }) {
 				<div className="d-flex flex-column p-5 bg-white with-border w-75">
 					{wishlistCategoryItems.map((item) => {
 						return (
-							<div key={item.id} className="p-2">
-								{item.title}
+							<div
+								key={item.id}
+								className="p-2 d-flex cursor-pointer"
+								onClick={() =>
+									navigate(
+										`/category/${item.categoryId}/items/${item.itemId}`
+									)
+								}
+							>
+								<label className="fs-3">{item.title}</label>
+								<label className="ml-auto">
+									AddedAt: {formatDate(item.addedAt)}
+								</label>
 							</div>
 						);
 					})}
