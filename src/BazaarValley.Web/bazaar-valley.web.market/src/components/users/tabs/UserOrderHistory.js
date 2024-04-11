@@ -6,11 +6,9 @@ import useFetch from "../../../hooks/useFetch";
 import Loader from "../../common/Loader";
 
 function UserOrderHistory({ user }) {
-	const {
-		data: orderHistory,
-		error,
-		loading: loadingOrderHistory
-	} = useFetch(`/Orders/${user.id}/history`);
+	const { data: orderHistory, loading: loadingOrderHistory } = useFetch(
+		`/Orders/${user.id}/history`
+	);
 
 	function formatDate(date) {
 		return new Date(date).toLocaleDateString("en-US", {

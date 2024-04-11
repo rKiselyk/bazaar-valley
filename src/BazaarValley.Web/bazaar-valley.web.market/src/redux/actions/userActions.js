@@ -1,4 +1,3 @@
-import { func } from "prop-types";
 import * as userApi from "../../apis/userApi";
 import * as types from "./actionTypes";
 import { apiCallError, beginApiCall } from "./apiStatusActions";

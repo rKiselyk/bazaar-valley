@@ -4,6 +4,7 @@ using BazaarValley.Dal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BazaarValley.Dal.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240410134349_AddItemCommentTable")]
+    partial class AddItemCommentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,9 +91,6 @@ namespace BazaarValley.Dal.Migrations
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
-
-                    b.Property<float>("Ratings")
-                        .HasColumnType("real");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

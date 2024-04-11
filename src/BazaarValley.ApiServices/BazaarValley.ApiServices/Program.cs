@@ -32,6 +32,7 @@ var mapperConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new ItemMappingProfiler());
     mc.AddProfile(new ItemImageMappingProfiler());
     mc.AddProfile(new ItemFieldMappingProfiler());
+    mc.AddProfile(new ItemCommentMappingProfiler());
 
     mc.AddProfile(new OrderMappingProfile());
 });

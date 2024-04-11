@@ -56,6 +56,10 @@ code {
 	font-weight: bold;
 }
 
+.font-italic {
+	font-style: italic;
+}
+
 .text-center {
 	text-align: center;
 }

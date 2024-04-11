@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BazaarValley.Services.Categories.Mapping;
 using BazaarValley.Services.Items.Mapping;
+using BazaarValley.Services.Items.Services.ItemComments;
 using BazaarValley.Services.Items.Services.ItemImages;
 using BazaarValley.Services.Items.Services.Items;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +14,8 @@ public static class DiExtensions
     {
         return services
             .AddScoped<IItemService, ItemService>()
-            .AddScoped<IItemImageService, ItemImageService>();
+            .AddScoped<IItemImageService, ItemImageService>()
+            .AddScoped<IItemCommentsService, ItemCommentsService>();
     }
 
     public static IServiceCollection ComposeItemMapping(this IServiceCollection services)

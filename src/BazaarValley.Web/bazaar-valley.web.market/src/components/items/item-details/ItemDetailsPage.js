@@ -20,6 +20,7 @@ import {
 	isInComparisonList,
 	isInWishlist
 } from "../commonItemFunctions";
+import ItemComments from "./comments/ItemComments";
 
 function ItemDetailsPage({
 	user,
@@ -47,11 +48,15 @@ function ItemDetailsPage({
 		setCategory(selectedCategory);
 	}, []);
 
+	const { data: itemInfo, loading: loadingItemInfo } = useFetch(
+		`/Items/${itemId}`
+	);
+
 	const {
-		data: itemInfo,
-		error,
-		loading: loadingItemInfo
-	} = useFetch(`/Items/${itemId}`);
+		data: comments,
+		setData: setComments,
+		loading: loadingComments
+	} = useFetch(`/items/${itemId}/comments`);
 
 	if (!itemInfo || !category)
 		return (
@@ -217,6 +222,19 @@ function ItemDetailsPage({
 						</Button>
 					)}
 				</div>
+			</div>
+
+			<div className="with-border bg-white p-5">
+				<ItemComments
+					itemId={itemId}
+					comments={comments}
+					addComment={(content, rating) => {
+						setComments([
+							...comments,
+							{ content, createdAt: new Date(), user, rating }
+						]);
+					}}
+				/>
 			</div>
 		</div>
 	);
