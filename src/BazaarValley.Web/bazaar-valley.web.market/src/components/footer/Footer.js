@@ -61,7 +61,8 @@ function Footer() {
 					</div>
 				</div>
 				<div className="text-center fs-5 mt-5">
-					Copyright @2024. All Right Reserved
+					Copyright @(Магазин "Андрій і Рома (якого десь найобують)")
+					2024. All Right Reserved
 				</div>
 			</div>
 		</>

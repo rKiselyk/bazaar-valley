@@ -12,6 +12,8 @@ import Button from "react-bootstrap/Button";
 
 function ComparePage({ comparisonList, categories, actions }) {
 	const [category, setCategory] = useState({});
+	const [itemsToCompare, setitemsToCompare] = useState([]);
+	const [categoryWithItems, setCategoryWithItems] = useState([]);
 
 	useEffect(() => {
 		if (categories.length === 0) {
@@ -22,6 +24,12 @@ function ComparePage({ comparisonList, categories, actions }) {
 	}, []);
 
 	useEffect(() => {
+		setitemsToCompare(
+			comparisonList.filter((item) => item.categoryId === category.id)
+		);
+	}, [category]);
+
+	useEffect(() => {
 		const categoryId = comparisonList[0]?.categoryId;
 		if (!categoryId) return;
 
@@ -30,6 +38,17 @@ function ComparePage({ comparisonList, categories, actions }) {
 		);
 
 		setCategory(selectedCategory);
+
+		const distinctCategoriesWithItemsToCompare = [
+			...new Set(comparisonList.map((item) => item.categoryId))
+		];
+		setCategoryWithItems(
+			categories.filter((category) =>
+				distinctCategoriesWithItemsToCompare.some(
+					(categoryId) => categoryId === category.id
+				)
+			)
+		);
 	}, [comparisonList]);
 
 	if (!category?.fields || !comparisonList.length) {
@@ -42,18 +61,30 @@ function ComparePage({ comparisonList, categories, actions }) {
 
 	return (
 		<div className="d-flex flex-column p-5 bg-white with-border">
-			<div className="d-flex">
-				<label className="fs-2">Comparison Page</label>
-				<label className="ml-auto fs-2">
-					{comparisonList.length} Items
-				</label>
+			<div className="d-flex justify-content-between">
+				<div className="fs-2">Comparison Page</div>
+				<div className="d-flex justify-content-center">
+					{categoryWithItems.map((category) => {
+						return (
+							<Button
+								variant="link"
+								onClick={() => {
+									setCategory(category);
+								}}
+							>
+								{category.name}
+							</Button>
+						);
+					})}
+				</div>
+				<div className="fs-2">{comparisonList.length} Items</div>
 			</div>
 			<div className="d-flex p-5">
-				<Table className="comparing-table" borderless>
+				<Table className="comparing-table" borderless hover>
 					<thead>
 						<tr>
 							<th></th>
-							{comparisonList.map((item, index) =>
+							{itemsToCompare.map((item, index) =>
 								renderItemHeader(index, item)
 							)}
 						</tr>
@@ -64,14 +95,14 @@ function ComparePage({ comparisonList, categories, actions }) {
 								<td className="font-weight-bold">
 									{field.name}
 								</td>
-								{comparisonList.map((item, index) =>
+								{itemsToCompare.map((item, index) =>
 									renderItemValue(item, field)
 								)}
 							</tr>
 						))}
 						<tr>
 							<td></td>
-							{comparisonList.map((item, index) => (
+							{itemsToCompare.map((item, index) => (
 								<td key={item.id}>
 									<div className="d-flex flex-column">
 										<Button variant="primary" size="sm">

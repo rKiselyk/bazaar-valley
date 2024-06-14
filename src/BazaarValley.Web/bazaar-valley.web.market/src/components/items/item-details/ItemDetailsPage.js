@@ -185,7 +185,7 @@ function ItemDetailsPage({
 								actions.addToComparisonList({
 									id: itemInfo.id,
 									categoryId: parseInt(categoryId),
-									image: itemInfo.images[0].blob,
+									image: itemInfo.images[0]?.blob,
 									title: itemInfo.title,
 									price: itemInfo.price,
 									fields: itemInfo.fields
