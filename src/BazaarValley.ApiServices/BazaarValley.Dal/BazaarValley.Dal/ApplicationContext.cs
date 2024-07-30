@@ -20,6 +20,7 @@ public class ApplicationContext : DbContext
     public DbSet<ItemModel> Items { get; set; }
     public DbSet<ItemFieldModel> ItemsFields { get; set; }
     public DbSet<ItemImageModel> ItemsImages { get; set; }
+    public DbSet<ItemCommentModel> ItemsComments { get; set; }
 
     public DbSet<OrderModel> Orders { get; set; }
     public DbSet<OrderItemModel> OrderItems { get; set; }

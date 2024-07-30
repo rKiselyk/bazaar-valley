@@ -83,10 +83,13 @@ function GridViewItems({ items, cart, wishlist, comparisonList }) {
 									</label>
 								</Card.Text>
 							</Card.Body>
-							<Card.Footer>
-								<small className="text-muted">
-									{item.ratings}* /* TODO Comments: 15 */
-								</small>
+							<Card.Footer className="d-flex">
+								<label className="w-50 text-center">
+									Rating: {item.ratings.toFixed(2)}
+								</label>
+								<label className="w-50 text-center">
+									Comments: {item.ratings.toFixed(2)}
+								</label>
 							</Card.Footer>
 						</Card>
 					</Col>

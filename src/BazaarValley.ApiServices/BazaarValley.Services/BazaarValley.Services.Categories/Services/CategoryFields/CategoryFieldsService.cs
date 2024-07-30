@@ -48,7 +48,7 @@ public class CategoryFieldsService : ICategoryFieldsService
         return new CategoryAvailableFiltersDto
         {
             MaxPrice = _applicationContext.Items.Select(item => item.Price).Max(),
-            FieldValues = fieldsValues
+            FieldValues = fieldsValues.OrderByDescending(field => field.Field.IsPrimary)
         };
     }
 }
